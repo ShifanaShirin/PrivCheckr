@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacy Policy Analysis System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #0f172a;
+            color: #e5e7eb;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #020617;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 15px;
+            background-color: #020617;
+            color: #f1f5f9;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            resize: none;
+            font-size: 14px;
+        }
+
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            background-color: #38bdf8;
+            border: none;
+            border-radius: 8px;
+            color: #020617;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #0ea5e9;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #020617;
+            border: 1px solid #334155;
+            border-radius: 8px;
+        }
+
+        .result-box h3 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #64748b;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Privacy Policy Analysis</h1>
+    <p class="subtitle">Multilingual DPDP Compliance Evaluation System</p>
+
+    <label for="policyText">Paste Privacy Policy Text</label>
+    <textarea id="policyText"
+        placeholder="Paste the privacy policy or terms & conditions text here..."></textarea>
+
+    <button onclick="analyzePolicy()">Analyze Policy</button>
+
+    <div class="result-box">
+        <h3>Analysis Result</h3>
+        <pre id="result">Waiting for analysis...</pre>
+    </div>
+
+    <footer>
+        © 2026 Privacy Policy Analysis System | Academic Project
+    </footer>
+</div>
+
+<script>
+    async function analyzePolicy() {
+        const text = document.getElementById("policyText").value;
+
+        if (!text.trim()) {
+            alert("Please enter privacy policy text");
+            return;
+        }
+
+        document.getElementById("result").innerText = "Analyzing...";
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ policy_text: text })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText =
+                JSON.stringify(data, null, 2);
+
+        } catch (error) {
+            document.getElementById("result").innerText =
+                "Backend not connected yet.";
+        }
+    }
+</script>
+
+</body>
+</html>
