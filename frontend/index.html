@@ -116,7 +116,7 @@
 
     <div class="result-box">
         <h3>Analysis Result</h3>
-        <pre id="result">Waiting for analysis...</pre>
+        <div id="result">Waiting for analysis...</div>
     </div>
 
     <footer>
@@ -133,7 +133,7 @@
             return;
         }
 
-        document.getElementById("result").innerText = "Analyzing...";
+        document.getElementById("result").innerHTML = "<p>Analyzing...</p>";
 
         try {
             const response = await fetch("http://127.0.0.1:8000/analyze", {
@@ -143,15 +143,32 @@
             });
 
             const data = await response.json();
-            document.getElementById("result").innerText =
-                JSON.stringify(data, null, 2);
+
+            if (data.error) {
+                document.getElementById("result").innerHTML =
+                    `<p style="color:red;">${data.error}</p>`;
+                return;
+            }
+
+            document.getElementById("result").innerHTML = `
+                <p><b>Detected Language:</b> ${data.detected_language}</p>
+                <p><b>Data Types Detected:</b> ${data.data_types.join(", ") || "None"}</p>
+                <p><b>DPDP Score:</b> ${data.dpdp_score}</p>
+                <p><b>Risk Level:</b> ${data.risk_level}</p>
+
+                <h4>Recommendations</h4>
+                <ul>
+                    ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
+                </ul>
+            `;
 
         } catch (error) {
-            document.getElementById("result").innerText =
-                "Backend not connected yet.";
+            document.getElementById("result").innerHTML =
+                "<p style='color:red;'>Backend not connected.</p>";
         }
     }
 </script>
+
 
 </body>
 </html>
