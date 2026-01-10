@@ -1,174 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Privacy Policy Analysis System</title>
+<meta charset="UTF-8">
+<title>PrivCheckr | Understand Privacy Policies Before You Consent</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #0f172a;
-            color: #e5e7eb;
-        }
+<style>
+:root{
+  --bg:#020617; --panel:#020617; --border:#1e293b;
+  --text:#e5e7eb; --muted:#94a3b8;
+  --primary:#38bdf8; --success:#22c55e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);color:var(--text);
+}
+nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 40px;border-bottom:1px solid var(--border);
+}
+nav .logo{font-weight:600;color:var(--primary)}
+nav a{margin-left:25px;color:var(--muted);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--primary)}
 
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: #020617;
-            border-radius: 10px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.5);
-        }
+.hero{
+  max-width:1200px;margin:auto;padding:90px 40px 70px;text-align:center;
+}
+.hero h1{font-size:44px;line-height:1.25}
+.hero h1 span{color:var(--primary)}
+.hero p{
+  max-width:720px;margin:18px auto 35px;
+  color:var(--muted);font-size:17px;line-height:1.6
+}
+.cta{
+  display:inline-block;padding:14px 36px;
+  background:var(--primary);color:#020617;
+  text-decoration:none;border-radius:8px;font-weight:600
+}
 
-        h1 {
-            text-align: center;
-            color: #38bdf8;
-            margin-bottom: 10px;
-        }
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:25px;max-width:900px;margin:50px auto 0;
+}
+.stat{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:10px;padding:22px
+}
+.stat h3{color:var(--success);margin:0 0 5px}
+.stat p{margin:0;font-size:13px;color:var(--muted)}
 
-        p.subtitle {
-            text-align: center;
-            color: #94a3b8;
-            margin-bottom: 30px;
-        }
+section{max-width:1200px;margin:auto;padding:70px 40px}
+section h2{text-align:center;font-size:30px;margin-bottom:15px}
+section p{
+  max-width:700px;margin:0 auto;text-align:center;
+  color:var(--muted);line-height:1.6
+}
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-        }
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;margin-top:40px
+}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:26px;text-align:left
+}
+.card h3{color:var(--primary);margin-bottom:10px;font-size:16px}
+.card p{font-size:14px;color:var(--muted);line-height:1.6}
 
-        textarea {
-            width: 100%;
-            height: 220px;
-            padding: 15px;
-            background-color: #020617;
-            color: #f1f5f9;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            resize: none;
-            font-size: 14px;
-        }
-
-        textarea::placeholder {
-            color: #64748b;
-        }
-
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 14px;
-            background-color: #38bdf8;
-            border: none;
-            border-radius: 8px;
-            color: #020617;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #0ea5e9;
-        }
-
-        .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #020617;
-            border: 1px solid #334155;
-            border-radius: 8px;
-        }
-
-        .result-box h3 {
-            color: #22c55e;
-            margin-bottom: 10px;
-        }
-
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            color: #e5e7eb;
-            font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #64748b;
-            font-size: 13px;
-        }
-    </style>
+footer{
+  border-top:1px solid var(--border);
+  text-align:center;padding:25px;
+  font-size:13px;color:var(--muted)
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Privacy Policy Analysis</h1>
-    <p class="subtitle">Multilingual DPDP Compliance Evaluation System</p>
+<nav>
+  <div class="logo">PrivCheckr</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="analyze.html">Analyze</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">Trust & FAQ</a>
+  </div>
+</nav>
 
-    <label for="policyText">Paste Privacy Policy Text</label>
-    <textarea id="policyText"
-        placeholder="Paste the privacy policy or terms & conditions text here..."></textarea>
+<div class="hero">
+  <h1>
+    <span>PrivCheckr</span><br>
+    Understand Privacy Policies Before You Consent
+  </h1>
 
-    <button onclick="analyzePolicy()">Analyze Policy</button>
+  <p>
+    PrivCheckr helps you instantly understand what a privacy policy really means —
+    what data is collected, how risky it is, and whether it aligns with DPDP principles.
+  </p>
 
-    <div class="result-box">
-        <h3>Analysis Result</h3>
-        <div id="result">Waiting for analysis...</div>
-    </div>
+  <a href="analyze.html" class="cta">Analyze a Privacy Policy</a>
 
-    <footer>
-        © 2026 Privacy Policy Analysis System | Academic Project
-    </footer>
+  <div class="stats">
+    <div class="stat"><h3>Multilingual</h3><p>Supports multiple languages</p></div>
+    <div class="stat"><h3>DPDP-Aware</h3><p>Aligned with Indian data law</p></div>
+    <div class="stat"><h3>Instant</h3><p>Results in seconds</p></div>
+    <div class="stat"><h3>Explainable</h3><p>No legal jargon</p></div>
+  </div>
 </div>
 
-<script>
-    async function analyzePolicy() {
-        const text = document.getElementById("policyText").value;
+<section>
+  <h2>What You Get</h2>
+  <p>
+    PrivCheckr converts long legal text into clear insights that help you
+    make informed consent decisions.
+  </p>
 
-        if (!text.trim()) {
-            alert("Please enter privacy policy text");
-            return;
-        }
+  <div class="grid">
+    <div class="card">
+      <h3>Data Collection Summary</h3>
+      <p>Clearly shows what personal or sensitive data is being collected.</p>
+    </div>
+    <div class="card">
+      <h3>Privacy Risk Level</h3>
+      <p>Highlights whether the policy poses low, medium, or high privacy risk.</p>
+    </div>
+    <div class="card">
+      <h3>DPDP Compliance Score</h3>
+      <p>Indicates how well the policy aligns with DPDP principles.</p>
+    </div>
+    <div class="card">
+      <h3>Actionable Recommendations</h3>
+      <p>Explains what is missing or unclear in the policy.</p>
+    </div>
+  </div>
+</section>
 
-        document.getElementById("result").innerHTML = "<p>Analyzing...</p>";
-
-        try {
-            const response = await fetch("http://127.0.0.1:8000/analyze", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ policy_text: text })
-            });
-
-            const data = await response.json();
-
-            if (data.error) {
-                document.getElementById("result").innerHTML =
-                    `<p style="color:red;">${data.error}</p>`;
-                return;
-            }
-
-            document.getElementById("result").innerHTML = `
-                <p><b>Detected Language:</b> ${data.detected_language}</p>
-                <p><b>Data Types Detected:</b> ${data.data_types.join(", ") || "None"}</p>
-                <p><b>DPDP Score:</b> ${data.dpdp_score}</p>
-                <p><b>Risk Level:</b> ${data.risk_level}</p>
-
-                <h4>Recommendations</h4>
-                <ul>
-                    ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
-                </ul>
-            `;
-
-        } catch (error) {
-            document.getElementById("result").innerHTML =
-                "<p style='color:red;'>Backend not connected.</p>";
-        }
-    }
-</script>
-
+<footer>
+© 2026 PrivCheckr — Understand Privacy Policies Before You Consent
+</footer>
 
 </body>
 </html>

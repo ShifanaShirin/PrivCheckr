@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Analyze Privacy Policy | PrivCheckr</title>
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#020617;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --success:#22c55e;
+  --warning:#facc15;
+  --danger:#ef4444;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  border-bottom:1px solid var(--border);
+}
+nav .logo{
+  font-weight:600;
+  color:var(--primary);
+}
+nav a{
+  margin-left:25px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover{color:var(--primary)}
+
+/* PAGE HEADER */
+.header{
+  max-width:1100px;
+  margin:auto;
+  padding:50px 40px 30px;
+}
+.header h1{
+  font-size:34px;
+  margin-bottom:10px;
+}
+.header p{
+  color:var(--muted);
+  font-size:16px;
+}
+
+/* MAIN */
+.main{
+  max-width:1100px;
+  margin:auto;
+  padding:0 40px 80px;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:40px;
+}
+
+/* INPUT CARD */
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+}
+.card h3{
+  margin-top:0;
+  color:var(--primary);
+}
+
+textarea{
+  width:100%;
+  height:260px;
+  margin-top:12px;
+  padding:16px;
+  background:#020617;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px;
+  resize:none;
+  font-size:14px;
+}
+textarea::placeholder{color:var(--muted)}
+
+button{
+  margin-top:18px;
+  width:100%;
+  padding:14px;
+  background:var(--primary);
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  color:#020617;
+  font-size:15px;
+}
+button:hover{background:#0ea5e9}
+
+/* RESULT */
+.result h4{
+  margin:0 0 12px;
+  color:var(--success);
+}
+.result-item{
+  margin-bottom:10px;
+  font-size:14px;
+}
+.badge{
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:600;
+}
+.low{background:#16a34a;color:#020617}
+.medium{background:#facc15;color:#020617}
+.high{background:#ef4444;color:white}
+
+ul{
+  margin:8px 0 0 18px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:25px;
+  font-size:13px;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">PrivCheckr</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="analyze.html">Analyze</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">Trust & FAQ</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Analyze Privacy Policy</h1>
+  <p>Paste a privacy policy below to understand data practices, risks, and DPDP compliance.</p>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- INPUT -->
+  <div class="card">
+    <h3>Privacy Policy Text</h3>
+    <textarea id="policyText"
+      placeholder="Paste the privacy policy or terms & conditions text here..."></textarea>
+    <button onclick="analyzePolicy()">Analyze Policy</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card result">
+    <h3>Analysis Result</h3>
+    <div id="output">
+      <p class="result-item" style="color:var(--muted);">
+        Results will appear here after analysis.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+© 2026 PrivCheckr — Understand Privacy Policies Before You Consent
+</footer>
+
+<script>
+async function analyzePolicy(){
+  const text = document.getElementById("policyText").value.trim();
+  const output = document.getElementById("output");
+
+  if(!text){
+    alert("Please paste a privacy policy.");
+    return;
+  }
+
+  output.innerHTML = "<p style='color:#94a3b8'>Analyzing...</p>";
+
+  try{
+    const res = await fetch("http://127.0.0.1:8000/analyze",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ policy_text:text })
+    });
+
+    const data = await res.json();
+
+    let riskClass = "low";
+    if(data.risk_level === "Medium") riskClass = "medium";
+    if(data.risk_level === "High") riskClass = "high";
+
+    output.innerHTML = `
+      <div class="result-item"><b>Detected Language:</b> ${data.detected_language}</div>
+      <div class="result-item"><b>Data Types:</b> ${data.data_types.join(", ") || "None"}</div>
+      <div class="result-item"><b>DPDP Score:</b> ${data.dpdp_score}</div>
+      <div class="result-item">
+        <b>Risk Level:</b>
+        <span class="badge ${riskClass}">${data.risk_level}</span>
+      </div>
+
+      <div class="result-item"><b>Recommendations:</b></div>
+      <ul>
+        ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
+      </ul>
+    `;
+  }catch{
+    output.innerHTML =
+      "<p style='color:#ef4444'>Unable to connect to backend.</p>";
+  }
+}
+</script>
+
+</body>
+</html>
