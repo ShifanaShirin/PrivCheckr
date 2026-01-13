@@ -144,6 +144,40 @@ footer{
   font-size:13px;
   color:var(--muted);
 }
+
+.dpdp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.dpdp-item {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dpdp-ok {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.dpdp-miss {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.explain {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 </style>
 </head>
 
@@ -219,19 +253,61 @@ async function analyzePolicy(){
     if(data.risk_level === "High") riskClass = "high";
 
     output.innerHTML = `
-      <div class="result-item"><b>Detected Language:</b> ${data.detected_language}</div>
-      <div class="result-item"><b>Data Types:</b> ${data.data_types.join(", ") || "None"}</div>
-      <div class="result-item"><b>DPDP Score:</b> ${data.dpdp_score}</div>
-      <div class="result-item">
-        <b>Risk Level:</b>
-        <span class="badge ${riskClass}">${data.risk_level}</span>
-      </div>
+    <div class="result-item"><b>Detected Language:</b> ${data.detected_language}</div>
+    <div class="result-item"><b>Data Types:</b> ${data.data_types.join(", ") || "None"}</div>
+    <div class="result-item"><b>DPDP Score:</b> ${data.dpdp_score}</div>
+    <div class="result-item">
+      <b>Risk Level:</b>
+      <span class="badge ${riskClass}">${data.risk_level}</span>
+    </div>
 
-      <div class="result-item"><b>Recommendations:</b></div>
-      <ul>
-        ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
-      </ul>
-    `;
+    <hr style="border-color:var(--border);margin:12px 0">
+
+    <div class="result-item"><b>DPDP Compliance Breakdown</b></div>
+    <div class="dpdp-grid">
+      <div class="dpdp-item">
+        Consent
+        <span class="${data.dpdp_breakdown.consent ? 'dpdp-ok' : 'dpdp-miss'}">
+          ${data.dpdp_breakdown.consent ? '✔' : '✖'}
+        </span>
+      </div>
+      <div class="dpdp-item">
+        Purpose Limitation
+        <span class="${data.dpdp_breakdown.purpose ? 'dpdp-ok' : 'dpdp-miss'}">
+          ${data.dpdp_breakdown.purpose ? '✔' : '✖'}
+        </span>
+      </div>
+      <div class="dpdp-item">
+        Data Retention
+        <span class="${data.dpdp_breakdown.retention ? 'dpdp-ok' : 'dpdp-miss'}">
+          ${data.dpdp_breakdown.retention ? '✔' : '✖'}
+        </span>
+      </div>
+      <div class="dpdp-item">
+        User Rights
+        <span class="${data.dpdp_breakdown.user_rights ? 'dpdp-ok' : 'dpdp-miss'}">
+          ${data.dpdp_breakdown.user_rights ? '✔' : '✖'}
+        </span>
+      </div>
+      <div class="dpdp-item">
+        Grievance Mechanism
+        <span class="${data.dpdp_breakdown.grievance ? 'dpdp-ok' : 'dpdp-miss'}">
+          ${data.dpdp_breakdown.grievance ? '✔' : '✖'}
+        </span>
+      </div>
+    </div>
+
+    <div class="result-item" style="margin-top:14px"><b>Why this result?</b></div>
+    <ul class="explain">
+      ${data.explanation.map(e => `<li>${e}</li>`).join("")}
+    </ul>
+
+    <div class="result-item" style="margin-top:12px"><b>Recommendations</b></div>
+    <ul>
+      ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
+    </ul>
+  `; 
+
   }catch{
     output.innerHTML =
       "<p style='color:#ef4444'>Unable to connect to backend.</p>";

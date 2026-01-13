@@ -56,18 +56,18 @@ def analyze_policy(data: PolicyInput):
     if any(word in text for word in ["aadhaar", "biometric", "health", "bank", "financial"]):
         data_types.append("Sensitive Data")
 
-    # 🔹 DPDP scoring (partial – interim level)
-    score = 0
-    if "consent" in text:
-        score += 1
-    if "purpose" in text or "use" in text:
-        score += 1
-    if "store" in text or "retain" in text:
-        score += 1
-    if "right" in text:
-        score += 1
-    if "grievance" in text or "contact" in text:
-        score += 1
+    # 🔹 DPDP principle-wise checks
+    dpdp_checks = {
+        "consent": "consent" in text,
+        "purpose": ("purpose" in text or "use" in text),
+        "retention": ("store" in text or "retain" in text),
+        "user_rights": "right" in text,
+        "grievance": ("grievance" in text or "contact" in text)
+    }
+
+    # 🔹 DPDP score calculation
+    score = sum(dpdp_checks.values())
+
 
     # 🔹 Risk level
     if score <= 1:
@@ -105,11 +105,37 @@ def analyze_policy(data: PolicyInput):
             "Privacy policy shows basic DPDP compliance."
         )
 
+    # 🔹 Explanation
+    explanation = []
+
+    if dpdp_checks["consent"]:
+        explanation.append("User consent is clearly mentioned.")
+    else:
+        explanation.append("User consent is not clearly specified.")
+
+    if dpdp_checks["purpose"]:
+        explanation.append("Purpose of data usage is mentioned.")
+    else:
+        explanation.append("Purpose of data usage is unclear.")
+
+    if dpdp_checks["retention"]:
+        explanation.append("Data storage or retention is addressed.")
+    else:
+        explanation.append("Data retention details are missing.")
+
+    if dpdp_checks["user_rights"]:
+        explanation.append("User rights are mentioned.")
+    else:
+        explanation.append("User rights are not clearly explained.")
+
     # 🔹 Final response
     return {
-        "detected_language": language,
-        "data_types": data_types,
-        "dpdp_score": f"{score}/5",
-        "risk_level": risk,
-        "recommendations": recommendations
+    "detected_language": language,
+    "data_types": data_types,
+    "dpdp_score": f"{score}/5",
+    "risk_level": risk,
+    "dpdp_breakdown": dpdp_checks,
+    "explanation": explanation,
+    "recommendations": recommendations
     }
+
