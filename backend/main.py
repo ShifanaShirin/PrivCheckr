@@ -2,140 +2,209 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from langdetect import detect
 from fastapi.middleware.cors import CORSMiddleware
+from deep_translator import GoogleTranslator
+import pycountry
 
+
+# ---------- APP ----------
 app = FastAPI(
     title="Privacy Policy Analysis System",
     description="Multilingual DPDP Compliance Evaluation API",
     version="1.0"
 )
 
-# ✅ CORS CONFIGURATION (CRITICAL)
+# ---------- CORS ----------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # allow frontend access
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True
 )
 
-# ---------- Input Model ----------
+# ---------- INPUT MODEL ----------
 class PolicyInput(BaseModel):
     policy_text: str
 
 
-# ---------- Root Endpoint ----------
+# ---------- LANGUAGE HELPERS ----------
+def normalize_language_code(lang_code: str) -> str:
+    if lang_code.startswith("zh"):
+        return "zh"
+    return lang_code
+
+
+def get_language_name(lang_code: str) -> str:
+    if lang_code == "zh":
+        return "Chinese"
+    try:
+        lang = pycountry.languages.get(alpha_2=lang_code)
+        return lang.name if lang else lang_code
+    except:
+        return lang_code
+
+
+# ---------- ROOT ----------
 @app.get("/")
 def root():
     return {"message": "Backend is running"}
 
 
-# ---------- Analyze Endpoint ----------
+# ---------- ANALYZE ----------
 @app.post("/analyze")
 def analyze_policy(data: PolicyInput):
 
-    # 🔹 Handle empty input
+    # ---------- EMPTY INPUT ----------
     if not data.policy_text.strip():
-        return {
-            "error": "Empty privacy policy text"
-        }
+        return {"error": "Empty privacy policy text"}
 
-    text = data.policy_text.lower()
+    original_text = data.policy_text.strip().lower()
 
-    # 🔹 Language detection
+    # ---------- LANGUAGE DETECTION ----------
     try:
-        language = detect(text)
+        detected_code = detect(original_text)
+        detected_code = normalize_language_code(detected_code)
     except:
-        language = "unknown"
+        detected_code = "unknown"
 
-    # 🔹 Data detection
+    detected_language = get_language_name(detected_code)
+
+    # ---------- TRANSLATION ----------
+    analysis_text = original_text
+    translated = False
+
+    if detected_code != "en":
+        try:
+            analysis_text = GoogleTranslator(
+                source="auto",
+                target="en"
+            ).translate(original_text).lower()
+
+            if analysis_text != original_text:
+                translated = True
+        except:
+            analysis_text = original_text
+
+    # ---------- DATA TYPE DETECTION ----------
     data_types = []
 
-    if any(word in text for word in ["name", "email", "phone", "address", "location"]):
+    if any(w in analysis_text for w in [
+        "name", "email", "phone", "address", "location"
+    ]):
         data_types.append("Personal Data")
 
-    if any(word in text for word in ["aadhaar", "biometric", "health", "bank", "financial"]):
+    if any(w in analysis_text for w in [
+        "aadhaar", "biometric", "health", "bank", "financial"
+    ]):
         data_types.append("Sensitive Data")
 
-    # 🔹 DPDP principle-wise checks
+    # ---------- NEGATIVE INDICATORS ----------
+    STRONG_NEGATIVE = [
+        "without consent",
+        "without notice",
+        "indefinitely",
+        "no guarantee",
+        "we reserve the right"
+    ]
+
+    WEAK_NEGATIVE = [
+        "may collect",
+        "may share",
+        "may use",
+        "at any time",
+        "subject to change"
+    ]
+
+    strong_negative_found = any(p in analysis_text for p in STRONG_NEGATIVE)
+    weak_negative_found = any(p in analysis_text for p in WEAK_NEGATIVE)
+
+    # ---------- DPDP PRINCIPLE CHECKS ----------
     dpdp_checks = {
-        "consent": "consent" in text,
-        "purpose": ("purpose" in text or "use" in text),
-        "retention": ("store" in text or "retain" in text),
-        "user_rights": "right" in text,
-        "grievance": ("grievance" in text or "contact" in text)
+        "consent": (
+            any(w in analysis_text for w in [
+                "consent", "agree", "agreement", "permission"
+            ]) and not strong_negative_found
+        ),
+
+        "purpose": (
+            any(w in analysis_text for w in [
+                "purpose", "use", "used for", "intended"
+            ]) and not strong_negative_found
+        ),
+
+        "retention": (
+            any(w in analysis_text for w in [
+                "retain", "retained", "stored", "storage",
+                "limited period", "necessary period"
+            ]) and "indefinitely" not in analysis_text
+        ),
+
+        "user_rights": any(w in analysis_text for w in [
+            "right to access", "right to update",
+            "right to delete", "can delete", "can remove"
+        ]),
+
+        "grievance": any(w in analysis_text for w in [
+            "contact us", "grievance",
+            "complaint", "reach us", "support"
+        ])
     }
 
-    # 🔹 DPDP score calculation
+    # ---------- SCORE ----------
     score = sum(dpdp_checks.values())
 
-
-    # 🔹 Risk level
-    if score <= 1:
+    # ---------- RISK LEVEL ----------
+    if score <= 1 or strong_negative_found:
         risk = "High"
-    elif score <= 3:
+    elif score <= 3 or weak_negative_found:
         risk = "Medium"
     else:
         risk = "Low"
 
-    # 🔹 Recommendations
+    # ---------- RECOMMENDATIONS ----------
     recommendations = []
 
-    if "Personal Data" in data_types and score < 3:
-        recommendations.append(
-            "Clearly specify the purpose of personal data collection."
-        )
+    if not dpdp_checks["consent"]:
+        recommendations.append("Add clear user consent before data collection.")
 
-    if "Sensitive Data" in data_types:
-        recommendations.append(
-            "Explicit user consent is required for sensitive personal data as per DPDP Act."
-        )
+    if not dpdp_checks["purpose"]:
+        recommendations.append("Clearly specify the purpose of data usage.")
 
-    if "consent" not in text:
-        recommendations.append(
-            "Add clear user consent statements in the privacy policy."
-        )
+    if not dpdp_checks["retention"]:
+        recommendations.append("Define a clear data retention period.")
 
-    if score < 2:
-        recommendations.append(
-            "Mention user rights and grievance redressal mechanisms."
-        )
+    if not dpdp_checks["user_rights"]:
+        recommendations.append("Mention user rights such as access, update, or deletion.")
+
+    if not dpdp_checks["grievance"]:
+        recommendations.append("Provide grievance redressal or contact details.")
 
     if not recommendations:
-        recommendations.append(
-            "Privacy policy shows basic DPDP compliance."
-        )
+        recommendations.append("Privacy policy shows strong DPDP compliance.")
 
-    # 🔹 Explanation
-    explanation = []
+    # ---------- EXPLANATION ----------
+    explanation = [
+        "User consent is mentioned." if dpdp_checks["consent"]
+        else "User consent is not clearly specified.",
 
-    if dpdp_checks["consent"]:
-        explanation.append("User consent is clearly mentioned.")
-    else:
-        explanation.append("User consent is not clearly specified.")
+        "Purpose limitation is mentioned." if dpdp_checks["purpose"]
+        else "Purpose of data usage is unclear.",
 
-    if dpdp_checks["purpose"]:
-        explanation.append("Purpose of data usage is mentioned.")
-    else:
-        explanation.append("Purpose of data usage is unclear.")
+        "Data retention or storage is addressed." if dpdp_checks["retention"]
+        else "Data retention details are missing.",
 
-    if dpdp_checks["retention"]:
-        explanation.append("Data storage or retention is addressed.")
-    else:
-        explanation.append("Data retention details are missing.")
+        "User rights are mentioned." if dpdp_checks["user_rights"]
+        else "User rights are not clearly stated."
+    ]
 
-    if dpdp_checks["user_rights"]:
-        explanation.append("User rights are mentioned.")
-    else:
-        explanation.append("User rights are not clearly explained.")
-
-    # 🔹 Final response
+    # ---------- FINAL RESPONSE ----------
     return {
-    "detected_language": language,
-    "data_types": data_types,
-    "dpdp_score": f"{score}/5",
-    "risk_level": risk,
-    "dpdp_breakdown": dpdp_checks,
-    "explanation": explanation,
-    "recommendations": recommendations
+        "detected_language": detected_language,
+        "translated_to_english": translated,
+        "data_types": data_types,
+        "dpdp_score": f"{score}/5",
+        "risk_level": risk,
+        "dpdp_breakdown": dpdp_checks,
+        "explanation": explanation,
+        "recommendations": recommendations
     }
-

@@ -3,39 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <title>About PrivCheckr</title>
-<link rel="stylesheet" href="index.html">
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#020617;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --success:#22c55e;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  border-bottom:1px solid var(--border);
+}
+nav .logo{
+  color:var(--primary);
+  font-weight:600;
+  text-decoration:none;
+}
+nav a{
+  margin-left:25px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover{color:var(--primary)}
+
+/* PAGE HEADER */
+.header{
+  max-width:1100px;
+  margin:auto;
+  padding:60px 40px 30px;
+}
+.header h1{
+  font-size:36px;
+  margin-bottom:12px;
+  color:var(--primary);
+}
+.header p{
+  color:var(--muted);
+  font-size:16px;
+  max-width:750px;
+  line-height:1.6;
+}
+
+/* CONTENT */
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:30px 40px;
+}
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:26px;
+  margin-bottom:25px;
+}
+.card h2{
+  margin-top:0;
+  color:var(--primary);
+  font-size:20px;
+}
+.card p{
+  color:var(--muted);
+  font-size:14.5px;
+  line-height:1.7;
+}
+
+/* LIST */
+ul{
+  margin-top:10px;
+  padding-left:18px;
+  color:var(--muted);
+  font-size:14.5px;
+}
+ul li{
+  margin-bottom:8px;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:15px;
+}
+.grid-item{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  font-size:14px;
+  color:var(--muted);
+}
+.grid-item strong{
+  color:var(--success);
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:25px;
+  font-size:13px;
+  color:var(--muted);
+}
+</style>
 </head>
 
-<body style="background:#020617;color:#e5e7eb;font-family:Segoe UI,Arial">
+<body>
 
-<nav style="padding:18px 40px;border-bottom:1px solid #1e293b">
-  <a href="index.html" style="color:#38bdf8;font-weight:600;text-decoration:none">PrivCheckr</a>
+<!-- NAVBAR -->
+<nav>
+  <a href="index.html" class="logo">PrivCheckr</a>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="analyze.html">Analyze</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">Trust & FAQ</a>
+  </div>
 </nav>
 
-<section style="max-width:900px;margin:auto;padding:60px 40px">
-<h1 style="color:#38bdf8">About PrivCheckr</h1>
+<!-- HEADER -->
+<div class="header">
+  <h1>About PrivCheckr</h1>
+  <p>
+    PrivCheckr helps users understand privacy policies before giving consent by
+    converting complex legal text into clear, actionable insights.
+  </p>
+</div>
 
-<p style="color:#94a3b8;line-height:1.7">
-PrivCheckr is designed to help users understand privacy policies before
-giving consent. Most privacy policies are written in complex legal language,
-making it difficult for users to know how their data is collected, used,
-or retained.
-</p>
+<!-- CONTENT -->
+<div class="section">
 
-<p style="color:#94a3b8;line-height:1.7">
-PrivCheckr analyzes privacy policy text and presents clear insights such as
-data collection practices, privacy risks, and DPDP compliance indicators.
-The goal is to promote transparency and informed decision-making.
-</p>
+  <div class="card">
+    <h2>What is PrivCheckr?</h2>
+    <p>
+      PrivCheckr is designed to address the lack of transparency in privacy policies.
+      Many users agree to terms without fully understanding how their personal data
+      is collected, used, stored, or shared.
+    </p>
+    <p>
+      The system analyzes privacy policy text and highlights key data practices,
+      privacy risks, and compliance indicators in a user-friendly format.
+    </p>
+  </div>
 
-<p style="color:#94a3b8;line-height:1.7">
-This project is developed as an academic and research-oriented system,
-inspired by real-world privacy compliance tools.
-</p>
-</section>
+  <div class="card">
+    <h2>DPDP Act Awareness</h2>
+    <p>
+      The Digital Personal Data Protection (DPDP) Act, 2023 is India’s data protection
+      law that regulates how organizations process personal data. It emphasizes
+      lawful processing, informed consent, purpose limitation, data retention, and
+      user rights.
+    </p>
+    <p>
+      PrivCheckr uses simplified DPDP-inspired principles to evaluate privacy policies
+      and present compliance insights without legal complexity.
+    </p>
+  </div>
 
-<footer style="text-align:center;color:#64748b;font-size:13px;padding:20px">
-© 2026 PrivCheckr
+  <div class="card">
+    <h2>What PrivCheckr Evaluates</h2>
+    <ul>
+      <li>User consent before data collection</li>
+      <li>Purpose limitation for data usage</li>
+      <li>Data storage and retention practices</li>
+      <li>User rights such as access, update, and deletion</li>
+      <li>Grievance and contact mechanisms</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Understanding the Analysis Results</h2>
+    <div class="grid">
+      <div class="grid-item"><strong>Detected Language</strong><br>Language identified in the policy text</div>
+      <div class="grid-item"><strong>Data Types</strong><br>Personal or sensitive data references</div>
+      <div class="grid-item"><strong>DPDP Score</strong><br>Compliance score based on DPDP principles</div>
+      <div class="grid-item"><strong>Risk Level</strong><br>Overall privacy risk indicator</div>
+      <div class="grid-item"><strong>DPDP Breakdown</strong><br>Principle-wise compliance checklist</div>
+      <div class="grid-item"><strong>Recommendations</strong><br>Suggestions to improve compliance</div>
+    </div>
+  </div>
+
+  <!-- <div class="card">
+    <h2>Scope and Limitations</h2>
+    <p>
+      PrivCheckr currently uses rule-based multilingual analysis to evaluate privacy
+      policies. The system is intended to provide informational insights and does not
+      replace professional legal advice.
+    </p>
+    <p>
+      Future enhancements include machine learning-based clause detection and deeper
+      multilingual semantic analysis.
+    </p>
+  </div> -->
+
+</div>
+
+<footer>
+© 2026 PrivCheckr — Understand Privacy Policies Before You Consent
 </footer>
 
 </body>

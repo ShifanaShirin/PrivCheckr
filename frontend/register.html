@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register | PrivCheckr</title>
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#020617;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  border-bottom:1px solid var(--border);
+}
+nav .logo{
+  font-weight:600;
+  color:var(--primary);
+}
+nav a{
+  margin-left:25px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover{color:var(--primary)}
+
+.container{
+  min-height:calc(100vh - 80px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  width:440px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:32px;
+}
+
+.card h1{
+  margin-top:0;
+  color:var(--primary);
+  text-align:center;
+}
+
+.card p{
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+label{
+  display:block;
+  margin-top:16px;
+  font-size:14px;
+}
+
+input{
+  width:100%;
+  margin-top:6px;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
+}
+
+button{
+  margin-top:24px;
+  width:100%;
+  padding:14px;
+  background:var(--primary);
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  color:#020617;
+}
+button:hover{background:#0ea5e9}
+
+.footer-text{
+  text-align:center;
+  margin-top:18px;
+  font-size:13px;
+  color:var(--muted);
+}
+.footer-text a{
+  color:var(--primary);
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">PrivCheckr</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="analyze.html">Analyze</a>
+    <a href="about.html">About</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="card">
+    <h1>Create Account</h1>
+    <p>Join PrivCheckr today</p>
+
+    <label>Full Name</label>
+    <input id="regName" type="text" placeholder="Your name">
+
+    <label>Email Address</label>
+    <input id="regEmail" type="email" placeholder="you@example.com">
+
+    <label>Password</label>
+    <input id="regPass" type="password" placeholder="Create password">
+
+    <label>Confirm Password</label>
+    <input id="regConfirm" type="password" placeholder="Confirm password">
+
+    <button onclick="return validateRegister()">Register</button>
+
+    <div class="footer-text">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function validateRegister(){
+  const name = document.getElementById("regName").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const pass = document.getElementById("regPass").value;
+  const confirm = document.getElementById("regConfirm").value;
+
+  if(!name || !email || !pass || !confirm){
+    alert("All fields are required.");
+    return false;
+  }
+
+  if(!email.includes("@")){
+    alert("Please enter a valid email.");
+    return false;
+  }
+
+  if(pass.length < 6){
+    alert("Password must be at least 6 characters.");
+    return false;
+  }
+
+  if(pass !== confirm){
+    alert("Passwords do not match.");
+    return false;
+  }
+
+  alert("Registration successful (backend integration pending).");
+  return false;
+}
+</script>
+
+</body>
+</html>
