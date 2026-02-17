@@ -1,29 +1,28 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 from langdetect import detect
 from fastapi.middleware.cors import CORSMiddleware
 from deep_translator import GoogleTranslator
 import pycountry
 
-# ✅ Correct package imports
-from backend.database import engine
-from backend.models import Base
-
-from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException
-from backend.database import get_db
-from backend.models import User
+# Database & Models
+from backend.database import engine, get_db
+from backend.models import Base, User
 from backend.schemas import UserCreate, UserLogin
 from backend.auth import hash_password, verify_password, create_access_token
 
+# NLP + ML
 from backend.nlp_pipeline import preprocess_text
+from backend.ml_classifier import classify_sentences
+from backend.dpdp_evaluator import evaluate_dpdp
 
 
 # ---------- APP ----------
 app = FastAPI(
     title="Privacy Policy Analysis System",
     description="Multilingual DPDP Compliance Evaluation API",
-    version="1.0"
+    version="2.0"
 )
 
 # ---------- CREATE DATABASE TABLES ----------
@@ -37,6 +36,7 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True
 )
+
 
 # ---------- INPUT MODEL ----------
 class PolicyInput(BaseModel):
@@ -64,6 +64,7 @@ def get_language_name(lang_code: str) -> str:
 @app.get("/")
 def root():
     return {"message": "Backend is running"}
+
 
 # ---------- REGISTER ----------
 @app.post("/register")
@@ -104,13 +105,13 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         "token_type": "bearer"
     }
 
+
 # ---------- ANALYZE ----------
 @app.post("/analyze")
 def analyze_policy(data: PolicyInput):
 
-    # ---------- EMPTY INPUT ----------
     if not data.policy_text.strip():
-        return {"error": "Empty privacy policy text"}
+        raise HTTPException(status_code=400, detail="Empty privacy policy text")
 
     original_text = data.policy_text.strip().lower()
 
@@ -127,7 +128,7 @@ def analyze_policy(data: PolicyInput):
     analysis_text = original_text
     translated = False
 
-    if detected_code != "en":
+    if detected_code != "en" and detected_code != "unknown":
         try:
             analysis_text = GoogleTranslator(
                 source="auto",
@@ -138,9 +139,15 @@ def analyze_policy(data: PolicyInput):
                 translated = True
         except:
             analysis_text = original_text
-    
+
     # ---------- NLP PREPROCESSING ----------
     processed_text = preprocess_text(analysis_text)
+
+    # ---------- ML CLASSIFICATION ----------
+    classification_results = classify_sentences(processed_text)
+
+    # ---------- DPDP EVALUATION ----------
+    dpdp_checks, score, risk = evaluate_dpdp(classification_results)
 
     # ---------- DATA TYPE DETECTION ----------
     data_types = []
@@ -154,69 +161,6 @@ def analyze_policy(data: PolicyInput):
         "aadhaar", "biometric", "health", "bank", "financial"
     ]):
         data_types.append("Sensitive Data")
-
-    # ---------- NEGATIVE INDICATORS ----------
-    STRONG_NEGATIVE = [
-        "without consent",
-        "without notice",
-        "indefinitely",
-        "no guarantee",
-        "we reserve the right"
-    ]
-
-    WEAK_NEGATIVE = [
-        "may collect",
-        "may share",
-        "may use",
-        "at any time",
-        "subject to change"
-    ]
-
-    strong_negative_found = any(p in analysis_text for p in STRONG_NEGATIVE)
-    weak_negative_found = any(p in analysis_text for p in WEAK_NEGATIVE)
-
-    # ---------- DPDP PRINCIPLE CHECKS ----------
-    dpdp_checks = {
-        "consent": (
-            any(w in analysis_text for w in [
-                "consent", "agree", "agreement", "permission"
-            ]) and not strong_negative_found
-        ),
-
-        "purpose": (
-            any(w in analysis_text for w in [
-                "purpose", "use", "used for", "intended"
-            ]) and not strong_negative_found
-        ),
-
-        "retention": (
-            any(w in analysis_text for w in [
-                "retain", "retained", "stored", "storage",
-                "limited period", "necessary period"
-            ]) and "indefinitely" not in analysis_text
-        ),
-
-        "user_rights": any(w in analysis_text for w in [
-            "right to access", "right to update",
-            "right to delete", "can delete", "can remove"
-        ]),
-
-        "grievance": any(w in analysis_text for w in [
-            "contact us", "grievance",
-            "complaint", "reach us", "support"
-        ])
-    }
-
-    # ---------- SCORE ----------
-    score = sum(dpdp_checks.values())
-
-    # ---------- RISK LEVEL ----------
-    if score <= 1 or strong_negative_found:
-        risk = "High"
-    elif score <= 3 or weak_negative_found:
-        risk = "Medium"
-    else:
-        risk = "Low"
 
     # ---------- RECOMMENDATIONS ----------
     recommendations = []
@@ -241,17 +185,11 @@ def analyze_policy(data: PolicyInput):
 
     # ---------- EXPLANATION ----------
     explanation = [
-        "User consent is mentioned." if dpdp_checks["consent"]
-        else "User consent is not clearly specified.",
-
-        "Purpose limitation is mentioned." if dpdp_checks["purpose"]
-        else "Purpose of data usage is unclear.",
-
-        "Data retention or storage is addressed." if dpdp_checks["retention"]
-        else "Data retention details are missing.",
-
-        "User rights are mentioned." if dpdp_checks["user_rights"]
-        else "User rights are not clearly stated."
+        f"Consent detected: {dpdp_checks['consent']}",
+        f"Purpose detected: {dpdp_checks['purpose']}",
+        f"Retention detected: {dpdp_checks['retention']}",
+        f"User rights detected: {dpdp_checks['user_rights']}",
+        f"Grievance mechanism detected: {dpdp_checks['grievance']}"
     ]
 
     # ---------- FINAL RESPONSE ----------
@@ -259,9 +197,10 @@ def analyze_policy(data: PolicyInput):
         "detected_language": detected_language,
         "translated_to_english": translated,
         "data_types": data_types,
-        "dpdp_score": f"{score}/5",
+        "dpdp_score": f"{score}/7",
         "risk_level": risk,
         "dpdp_breakdown": dpdp_checks,
+        "classification_summary": classification_results,
         "explanation": explanation,
         "recommendations": recommendations
     }
