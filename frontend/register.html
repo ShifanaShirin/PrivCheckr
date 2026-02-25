@@ -7,11 +7,13 @@
 <style>
 :root{
   --bg:#020617;
-  --panel:#020617;
+  --panel:#0b1220;
   --border:#1e293b;
   --text:#e5e7eb;
   --muted:#94a3b8;
   --primary:#38bdf8;
+  --danger:#ef4444;
+  --success:#22c55e;
 }
 
 *{box-sizing:border-box}
@@ -30,16 +32,21 @@ nav{
   padding:18px 40px;
   border-bottom:1px solid var(--border);
 }
-nav .logo{
+
+.logo{
   font-weight:600;
   color:var(--primary);
+  text-decoration:none;
+  font-size:18px;
 }
+
 nav a{
   margin-left:25px;
   color:var(--muted);
   text-decoration:none;
   font-size:14px;
 }
+
 nav a:hover{color:var(--primary)}
 
 .container{
@@ -61,12 +68,6 @@ nav a:hover{color:var(--primary)}
   margin-top:0;
   color:var(--primary);
   text-align:center;
-}
-
-.card p{
-  text-align:center;
-  color:var(--muted);
-  font-size:14px;
 }
 
 label{
@@ -96,7 +97,17 @@ button{
   cursor:pointer;
   color:#020617;
 }
+
 button:hover{background:#0ea5e9}
+
+.message{
+  margin-top:12px;
+  font-size:13px;
+  white-space:pre-line;
+}
+
+.error{ color: var(--danger); }
+.success{ color: var(--success); }
 
 .footer-text{
   text-align:center;
@@ -104,6 +115,7 @@ button:hover{background:#0ea5e9}
   font-size:13px;
   color:var(--muted);
 }
+
 .footer-text a{
   color:var(--primary);
   text-decoration:none;
@@ -114,18 +126,13 @@ button:hover{background:#0ea5e9}
 <body>
 
 <nav>
-  <div class="logo">PrivCheckr</div>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="analyze.html">Analyze</a>
-    <a href="about.html">About</a>
-  </div>
+  <a href="/" class="logo">PrivCheckr</a>
+  <div id="navLinks"></div>
 </nav>
 
 <div class="container">
   <div class="card">
     <h1>Create Account</h1>
-    <p>Join PrivCheckr today</p>
 
     <label>Full Name</label>
     <input id="regName" type="text" placeholder="Your name">
@@ -141,43 +148,117 @@ button:hover{background:#0ea5e9}
 
     <button onclick="return validateRegister()">Register</button>
 
+    <div id="msgBox" class="message"></div>
+
     <div class="footer-text">
       Already have an account?
-      <a href="login.html">Login</a>
+      <a href="/login.html">Login</a>
     </div>
   </div>
 </div>
 
 <script>
-function validateRegister(){
+
+// If already logged in → go to dashboard
+if (localStorage.getItem("token")) {
+  window.location.href = "/dashboard.html";
+}
+
+// Public navbar
+const nav = document.getElementById("navLinks");
+nav.innerHTML = `
+  <a href="/">Home</a>
+  <a href="/about.html">About</a>
+  <a href="/faq.html">Trust & FAQ</a>
+  <a href="/login.html">Login</a>
+`;
+
+// Message helper
+function showMessage(message, type){
+  const box = document.getElementById("msgBox");
+  box.innerText = message;
+  box.className = "message " + type;
+}
+
+async function validateRegister(){
+
   const name = document.getElementById("regName").value.trim();
   const email = document.getElementById("regEmail").value.trim();
   const pass = document.getElementById("regPass").value;
   const confirm = document.getElementById("regConfirm").value;
 
+  showMessage("", "");
+
   if(!name || !email || !pass || !confirm){
-    alert("All fields are required.");
+    showMessage("All fields are required.", "error");
     return false;
   }
 
-  if(!email.includes("@")){
-    alert("Please enter a valid email.");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRegex.test(email)){
+    showMessage("Please enter a valid email address.", "error");
     return false;
   }
 
-  if(pass.length < 6){
-    alert("Password must be at least 6 characters.");
+  if(pass.length < 8){
+    showMessage("Password must be at least 8 characters.", "error");
+    return false;
+  }
+
+  if(pass.length > 72){
+    showMessage("Password must not exceed 72 characters.", "error");
+    return false;
+  }
+
+  if(!/[A-Z]/.test(pass)){
+    showMessage("Password must contain at least one uppercase letter.", "error");
+    return false;
+  }
+
+  if(!/[a-z]/.test(pass)){
+    showMessage("Password must contain at least one lowercase letter.", "error");
+    return false;
+  }
+
+  if(!/\d/.test(pass)){
+    showMessage("Password must contain at least one number.", "error");
     return false;
   }
 
   if(pass !== confirm){
-    alert("Passwords do not match.");
+    showMessage("Passwords do not match.", "error");
     return false;
   }
 
-  alert("Registration successful (backend integration pending).");
+  try{
+    const res = await fetch("/register",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ name, email, password: pass })
+    });
+
+    const data = await res.json();
+
+    if(res.ok){
+      showMessage("Registration successful! Redirecting to login...", "success");
+      setTimeout(() => {
+        window.location.href = "/login.html";
+      }, 1500);
+    } 
+    else if(Array.isArray(data.detail)){
+      showMessage(data.detail.map(e => e.msg).join("\n"), "error");
+    }
+    else{
+      showMessage(data.detail || "Registration failed.", "error");
+    }
+
+  } catch {
+    showMessage("Unable to connect to server.", "error");
+  }
+
   return false;
 }
+
 </script>
 
 </body>

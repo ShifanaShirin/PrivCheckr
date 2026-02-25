@@ -6,77 +6,122 @@
 
 <style>
 :root{
-  --bg:#020617; --panel:#020617; --border:#1e293b;
-  --text:#e5e7eb; --muted:#94a3b8;
-  --primary:#38bdf8; --success:#22c55e;
+  --bg:#020617; 
+  --panel:#0b1220; 
+  --border:#1e293b;
+  --text:#e5e7eb; 
+  --muted:#94a3b8;
+  --primary:#38bdf8; 
+  --success:#22c55e;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);color:var(--text);
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 nav{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:18px 40px;border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  border-bottom:1px solid var(--border);
 }
-nav .logo{font-weight:600;color:var(--primary)}
+.logo{
+  font-weight:600;
+  color:var(--primary);
+  text-decoration:none;
+  font-size:18px;
+}
 nav a{
-  margin-left:25px;color:var(--muted);
-  text-decoration:none;font-size:14px
+  margin-left:25px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px
 }
 nav a:hover{color:var(--primary)}
 
 .hero{
-  max-width:1200px;margin:auto;
-  padding:90px 40px 70px;text-align:center;
+  max-width:1200px;
+  margin:auto;
+  padding:90px 40px 70px;
+  text-align:center;
 }
 .hero h1{font-size:44px;line-height:1.25}
 .hero h1 span{color:var(--primary)}
 .hero p{
-  max-width:720px;margin:18px auto 35px;
-  color:var(--muted);font-size:17px;line-height:1.6
+  max-width:720px;
+  margin:18px auto 35px;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.6
 }
 .cta{
-  display:inline-block;padding:14px 36px;
-  background:var(--primary);color:#020617;
-  text-decoration:none;border-radius:8px;font-weight:600
+  display:inline-block;
+  padding:14px 36px;
+  background:var(--primary);
+  color:#020617;
+  text-decoration:none;
+  border-radius:8px;
+  font-weight:600
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:25px;max-width:900px;margin:50px auto 0;
+  gap:25px;
+  max-width:900px;
+  margin:50px auto 0;
 }
 .stat{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:10px;padding:22px
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:22px
 }
 .stat h3{color:var(--success);margin:0 0 5px}
 .stat p{margin:0;font-size:13px;color:var(--muted)}
 
-section{max-width:1200px;margin:auto;padding:70px 40px}
-section h2{text-align:center;font-size:30px;margin-bottom:15px}
+section{
+  max-width:1200px;
+  margin:auto;
+  padding:70px 40px
+}
+section h2{
+  text-align:center;
+  font-size:30px;
+  margin-bottom:15px
+}
 section p{
-  max-width:700px;margin:0 auto;text-align:center;
-  color:var(--muted);line-height:1.6
+  max-width:700px;
+  margin:0 auto;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.6
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:25px;margin-top:40px
+  gap:25px;
+  margin-top:40px
 }
 .card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:12px;padding:26px;text-align:left
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:26px;
 }
 .card h3{color:var(--primary);margin-bottom:10px;font-size:16px}
 .card p{font-size:14px;color:var(--muted);line-height:1.6}
 
 footer{
   border-top:1px solid var(--border);
-  text-align:center;padding:25px;
-  font-size:13px;color:var(--muted)
+  text-align:center;
+  padding:25px;
+  font-size:13px;
+  color:var(--muted)
 }
 </style>
 </head>
@@ -85,17 +130,9 @@ footer{
 
 <!-- NAVBAR -->
 <nav>
-  <div class="logo">PrivCheckr</div>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="analyze.html">Analyze</a>
-    <a href="about.html">About</a>
-    <a href="faq.html">Trust & FAQ</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
-  </div>
+  <a href="/" class="logo">PrivCheckr</a>
+  <div id="navLinks"></div>
 </nav>
-
 
 <!-- HERO -->
 <div class="hero">
@@ -109,10 +146,9 @@ footer{
     what data is collected, how risky it is, and whether it aligns with DPDP principles.
   </p>
 
-  <a href="analyze.html" class="cta">
-    Analyze a Privacy Policy
+  <a href="/login.html" class="cta" id="ctaButton">
+    Login to Analyze
   </a>
-
 
   <div class="stats">
     <div class="stat">
@@ -165,6 +201,26 @@ footer{
 <footer>
 © 2026 PrivCheckr — Understand Privacy Policies Before You Consent
 </footer>
+
+<script>
+
+// If logged in → Redirect directly to dashboard
+if (localStorage.getItem("token")) {
+  window.location.href = "/dashboard.html";
+}
+
+// Navbar logic (only for non-logged users)
+const nav = document.getElementById("navLinks");
+
+nav.innerHTML = `
+  <a href="/">Home</a>
+  <a href="/about.html">About</a>
+  <a href="/faq.html">Trust & FAQ</a>
+  <a href="/login.html">Login</a>
+  <a href="/register.html">Register</a>
+`;
+
+</script>
 
 </body>
 </html>

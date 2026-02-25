@@ -1,16 +1,23 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from langdetect import detect
-from fastapi.middleware.cors import CORSMiddleware
 from deep_translator import GoogleTranslator
 import pycountry
+import os
 
 # Database & Models
 from backend.database import engine, get_db
-from backend.models import Base, User
-from backend.schemas import UserCreate, UserLogin
-from backend.auth import hash_password, verify_password, create_access_token
+from backend.models import Base, User, Analysis
+from backend.schemas import UserCreate, UserLogin, AnalysisResponse
+from backend.auth import (
+    hash_password,
+    verify_password,
+    create_access_token,
+    get_current_user
+)
 
 # NLP + ML
 from backend.nlp_pipeline import preprocess_text
@@ -18,17 +25,20 @@ from backend.ml_classifier import classify_sentences
 from backend.dpdp_evaluator import evaluate_dpdp
 
 
-# ---------- APP ----------
+# ============================================================
+# APP CONFIG
+# ============================================================
+
 app = FastAPI(
     title="Privacy Policy Analysis System",
     description="Multilingual DPDP Compliance Evaluation API",
-    version="2.0"
+    version="4.0"
 )
 
-# ---------- CREATE DATABASE TABLES ----------
+# Create tables safely at startup
 Base.metadata.create_all(bind=engine)
 
-# ---------- CORS ----------
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -38,12 +48,18 @@ app.add_middleware(
 )
 
 
-# ---------- INPUT MODEL ----------
+# ============================================================
+# INPUT MODEL
+# ============================================================
+
 class PolicyInput(BaseModel):
     policy_text: str
 
 
-# ---------- LANGUAGE HELPERS ----------
+# ============================================================
+# LANGUAGE HELPERS
+# ============================================================
+
 def normalize_language_code(lang_code: str) -> str:
     if lang_code.startswith("zh"):
         return "zh"
@@ -60,13 +76,10 @@ def get_language_name(lang_code: str) -> str:
         return lang_code
 
 
-# ---------- ROOT ----------
-@app.get("/")
-def root():
-    return {"message": "Backend is running"}
+# ============================================================
+# AUTH ROUTES
+# ============================================================
 
-
-# ---------- REGISTER ----------
 @app.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
 
@@ -89,7 +102,6 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return {"message": "User registered successfully"}
 
 
-# ---------- LOGIN ----------
 @app.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
 
@@ -98,7 +110,13 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     if not db_user or not verify_password(user.password, db_user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    access_token = create_access_token(data={"sub": db_user.email})
+    access_token = create_access_token(
+    data={
+        "sub": str(db_user.id),
+        "email": db_user.email,
+        "name": db_user.name
+    }
+)
 
     return {
         "access_token": access_token,
@@ -106,16 +124,23 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     }
 
 
-# ---------- ANALYZE ----------
+# ============================================================
+# ANALYZE (PROTECTED)
+# ============================================================
+
 @app.post("/analyze")
-def analyze_policy(data: PolicyInput):
+def analyze_policy(
+    data: PolicyInput,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
 
     if not data.policy_text.strip():
         raise HTTPException(status_code=400, detail="Empty privacy policy text")
 
     original_text = data.policy_text.strip().lower()
 
-    # ---------- LANGUAGE DETECTION ----------
+    # ---------------- Language Detection ----------------
     try:
         detected_code = detect(original_text)
         detected_code = normalize_language_code(detected_code)
@@ -124,45 +149,74 @@ def analyze_policy(data: PolicyInput):
 
     detected_language = get_language_name(detected_code)
 
-    # ---------- TRANSLATION ----------
+    # ---------------- Translation ----------------
     analysis_text = original_text
     translated = False
 
-    if detected_code != "en" and detected_code != "unknown":
+    if detected_code not in ["en", "unknown"]:
         try:
-            analysis_text = GoogleTranslator(
+            translated_text = GoogleTranslator(
                 source="auto",
                 target="en"
-            ).translate(original_text).lower()
+            ).translate(original_text)
 
-            if analysis_text != original_text:
+            if translated_text:
+                analysis_text = translated_text.lower()
                 translated = True
         except:
             analysis_text = original_text
 
-    # ---------- NLP PREPROCESSING ----------
+    # ---------------- NLP + ML ----------------
     processed_text = preprocess_text(analysis_text)
-
-    # ---------- ML CLASSIFICATION ----------
     classification_results = classify_sentences(processed_text)
 
-    # ---------- DPDP EVALUATION ----------
     dpdp_checks, score, risk = evaluate_dpdp(classification_results)
+    consent = dpdp_checks["consent"]
+    purpose = dpdp_checks["purpose"]
+    retention = dpdp_checks["retention"]
+    rights = dpdp_checks["user_rights"]
+    grievance = dpdp_checks["grievance"]
 
-    # ---------- DATA TYPE DETECTION ----------
+    # ---------------- Data Type Detection ----------------
     data_types = []
 
-    if any(w in analysis_text for w in [
-        "name", "email", "phone", "address", "location"
-    ]):
+    if any(w in analysis_text for w in
+           ["name", "email", "phone", "address", "location"]):
         data_types.append("Personal Data")
 
-    if any(w in analysis_text for w in [
-        "aadhaar", "biometric", "health", "bank", "financial"
-    ]):
+    if any(w in analysis_text for w in
+           ["aadhaar", "biometric", "health", "bank", "financial"]):
         data_types.append("Sensitive Data")
 
-    # ---------- RECOMMENDATIONS ----------
+    # ---------------- Explanation ----------------
+    explanation = []
+
+    if consent:
+        explanation.append("User consent clause detected.")
+    else:
+        explanation.append("Missing clear user consent clause.")
+
+    if purpose:
+        explanation.append("Purpose of data collection identified.")
+    else:
+        explanation.append("Purpose limitation not clearly defined.")
+
+    if retention:
+        explanation.append("Data retention policy mentioned.")
+    else:
+        explanation.append("No clear data retention period specified.")
+
+    if rights:
+        explanation.append("User rights such as access or deletion detected.")
+    else:
+        explanation.append("User rights not clearly stated.")
+
+    if grievance:
+        explanation.append("Grievance or contact mechanism available.")
+    else:
+        explanation.append("No grievance redressal mechanism mentioned.")
+
+    # ---------------- Recommendations ----------------
     recommendations = []
 
     if not dpdp_checks["consent"]:
@@ -183,16 +237,19 @@ def analyze_policy(data: PolicyInput):
     if not recommendations:
         recommendations.append("Privacy policy shows strong DPDP compliance.")
 
-    # ---------- EXPLANATION ----------
-    explanation = [
-        f"Consent detected: {dpdp_checks['consent']}",
-        f"Purpose detected: {dpdp_checks['purpose']}",
-        f"Retention detected: {dpdp_checks['retention']}",
-        f"User rights detected: {dpdp_checks['user_rights']}",
-        f"Grievance mechanism detected: {dpdp_checks['grievance']}"
-    ]
+    # ---------------- Store in DB ----------------
+    new_analysis = Analysis(
+        policy_text=analysis_text,
+        detected_language=detected_language,
+        risk_level=risk,
+        dpdp_score=f"{score}/7",
+        owner_id=current_user.id
+    )
 
-    # ---------- FINAL RESPONSE ----------
+    db.add(new_analysis)
+    db.commit()
+
+    # ---------------- Response ----------------
     return {
         "detected_language": detected_language,
         "translated_to_english": translated,
@@ -201,6 +258,63 @@ def analyze_policy(data: PolicyInput):
         "risk_level": risk,
         "dpdp_breakdown": dpdp_checks,
         "classification_summary": classification_results,
-        "explanation": explanation,
-        "recommendations": recommendations
+        "recommendations": recommendations,
+        "explanation": explanation
     }
+
+
+# ============================================================
+# USER HISTORY
+# ============================================================
+
+@app.get("/my-analyses", response_model=list[AnalysisResponse])
+def get_user_analyses(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(Analysis).filter(
+        Analysis.owner_id == current_user.id
+    ).all()
+
+
+# ============================================================
+# FRONTEND ROUTES
+# ============================================================
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+frontend_path = os.path.join(BASE_DIR, "frontend")
+
+
+@app.get("/", response_class=FileResponse)
+def serve_home():
+    return os.path.join(frontend_path, "index.html")
+
+
+@app.get("/login.html", response_class=FileResponse)
+def serve_login():
+    return os.path.join(frontend_path, "login.html")
+
+
+@app.get("/register.html", response_class=FileResponse)
+def serve_register():
+    return os.path.join(frontend_path, "register.html")
+
+
+@app.get("/dashboard.html", response_class=FileResponse)
+def serve_dashboard():
+    return os.path.join(frontend_path, "dashboard.html")
+
+
+@app.get("/analyze.html", response_class=FileResponse)
+def serve_analyze():
+    return os.path.join(frontend_path, "analyze.html")
+
+
+@app.get("/about.html", response_class=FileResponse)
+def serve_about():
+    return os.path.join(frontend_path, "about.html")
+
+
+@app.get("/faq.html", response_class=FileResponse)
+def serve_faq():
+    return os.path.join(frontend_path, "faq.html")

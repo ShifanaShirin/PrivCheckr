@@ -7,7 +7,7 @@
 <style>
 :root{
   --bg:#020617;
-  --panel:#020617;
+  --panel:#0b1220;
   --border:#1e293b;
   --text:#e5e7eb;
   --muted:#94a3b8;
@@ -23,7 +23,6 @@ body{
   color:var(--text);
 }
 
-/* NAVBAR */
 nav{
   display:flex;
   justify-content:space-between;
@@ -31,10 +30,14 @@ nav{
   padding:18px 40px;
   border-bottom:1px solid var(--border);
 }
-nav .logo{
+
+.logo{
   font-weight:600;
   color:var(--primary);
+  text-decoration:none;
+  font-size:18px;
 }
+
 nav a{
   margin-left:25px;
   color:var(--muted);
@@ -43,7 +46,6 @@ nav a{
 }
 nav a:hover{color:var(--primary)}
 
-/* CARD */
 .container{
   min-height:calc(100vh - 80px);
   display:flex;
@@ -111,28 +113,15 @@ button:hover{background:#0ea5e9}
   text-decoration:none;
 }
 
-/* RESET MODAL */
-#resetBox{
-  display:none;
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.7);
-  justify-content:center;
-  align-items:center;
-}
 </style>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <nav>
-  <div class="logo">PrivCheckr</div>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="analyze.html">Analyze</a>
-    <a href="about.html">About</a>
-  </div>
+  <a href="/" class="logo">PrivCheckr</a>
+  <div id="navLinks"></div>
 </nav>
 
 <div class="container">
@@ -149,41 +138,29 @@ button:hover{background:#0ea5e9}
     <button onclick="return validateLogin()">Login</button>
 
     <div class="footer-text">
-      <a href="#" onclick="openReset()">Forgot password?</a>
-    </div>
-
-    <div class="footer-text">
       Don’t have an account?
-      <a href="register.html">Create one</a>
+      <a href="/register.html">Create one</a>
     </div>
-  </div>
-</div>
-
-<!-- RESET PASSWORD MODAL -->
-<div id="resetBox">
-  <div style="background:#020617;border:1px solid #1e293b;
-  border-radius:12px;padding:30px;width:380px;text-align:center;">
-    <h3 style="color:#38bdf8">Reset Password</h3>
-    <p style="color:#94a3b8;font-size:14px">
-      Enter your registered email
-    </p>
-
-    <input id="resetEmail" type="email" placeholder="you@example.com"
-      style="width:100%;padding:12px;border-radius:8px;
-      border:1px solid #1e293b;background:#020617;color:#e5e7eb;margin-top:12px;">
-
-    <button style="margin-top:16px;width:100%;padding:12px;
-      background:#38bdf8;border:none;border-radius:8px;font-weight:600;"
-      onclick="sendReset()">Send Reset Link</button>
-
-    <p style="margin-top:12px;font-size:13px">
-      <a href="#" onclick="closeReset()" style="color:#38bdf8">Cancel</a>
-    </p>
   </div>
 </div>
 
 <script>
-function validateLogin(){
+
+// If already logged in → go to dashboard
+if (localStorage.getItem("token")) {
+  window.location.href = "/dashboard.html";
+}
+
+// Public navbar
+const nav = document.getElementById("navLinks");
+nav.innerHTML = `
+  <a href="/">Home</a>
+  <a href="/about.html">About</a>
+  <a href="/faq.html">Trust & FAQ</a>
+  <a href="/register.html">Register</a>
+`;
+
+async function validateLogin(){
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value;
 
@@ -192,37 +169,33 @@ function validateLogin(){
     return false;
   }
 
-  if(!email.includes("@")){
-    alert("Please enter a valid email address.");
-    return false;
+  try{
+    const res = await fetch("/login",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if(res.ok){
+      localStorage.setItem("token", data.access_token);
+      window.location.href = "/dashboard.html";
+    } 
+    else if (Array.isArray(data.detail)) {
+      alert(data.detail.map(err => err.msg).join("\n"));
+    }
+    else {
+      alert(data.detail || "Invalid email or password.");
+    }
+
+  } catch {
+    alert("Unable to connect to server.");
   }
 
-  if(password.length < 6){
-    alert("Password must be at least 6 characters.");
-    return false;
-  }
-
-  alert("Login validation successful (backend integration pending).");
   return false;
 }
 
-function openReset(){
-  document.getElementById("resetBox").style.display = "flex";
-}
-
-function closeReset(){
-  document.getElementById("resetBox").style.display = "none";
-}
-
-function sendReset(){
-  const email = document.getElementById("resetEmail").value.trim();
-  if(!email || !email.includes("@")){
-    alert("Please enter a valid email.");
-    return;
-  }
-  alert("Password reset link sent (demo only).");
-  closeReset();
-}
 </script>
 
 </body>

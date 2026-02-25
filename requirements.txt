@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+passlib[bcrypt]
+python-jose
+langdetect
+deep-translator
+pycountry
+nltk
+scikit-learn
+joblib
+email-validator

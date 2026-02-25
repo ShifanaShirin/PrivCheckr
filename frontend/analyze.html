@@ -7,13 +7,12 @@
 <style>
 :root{
   --bg:#020617;
-  --panel:#020617;
+  --panel:#0b1220;
   --border:#1e293b;
   --text:#e5e7eb;
   --muted:#94a3b8;
   --primary:#38bdf8;
   --success:#22c55e;
-  --warning:#facc15;
   --danger:#ef4444;
 }
 
@@ -27,6 +26,7 @@ body{
 }
 
 /* NAVBAR */
+
 nav{
   display:flex;
   justify-content:space-between;
@@ -34,34 +34,45 @@ nav{
   padding:18px 40px;
   border-bottom:1px solid var(--border);
 }
-nav .logo{
+
+.logo{
   font-weight:600;
   color:var(--primary);
+  font-size:18px;
+  text-decoration:none;
 }
-nav a{
-  margin-left:25px;
+
+.nav-links{
+  display:flex;
+  gap:25px;
+  align-items:center;
+}
+
+.nav-links a{
   color:var(--muted);
   text-decoration:none;
   font-size:14px;
 }
-nav a:hover{color:var(--primary)}
 
-/* PAGE HEADER */
+.nav-links a:hover{
+  color:var(--primary);
+}
+
+/* HEADER */
+
 .header{
   max-width:1100px;
   margin:auto;
   padding:50px 40px 30px;
 }
+
 .header h1{
   font-size:34px;
   margin-bottom:10px;
 }
-.header p{
-  color:var(--muted);
-  font-size:16px;
-}
 
 /* MAIN */
+
 .main{
   max-width:1100px;
   margin:auto;
@@ -71,16 +82,11 @@ nav a:hover{color:var(--primary)}
   gap:40px;
 }
 
-/* INPUT CARD */
 .card{
   background:var(--panel);
   border:1px solid var(--border);
   border-radius:12px;
   padding:28px;
-}
-.card h3{
-  margin-top:0;
-  color:var(--primary);
 }
 
 textarea{
@@ -93,9 +99,7 @@ textarea{
   border:1px solid var(--border);
   border-radius:8px;
   resize:none;
-  font-size:14px;
 }
-textarea::placeholder{color:var(--muted)}
 
 button{
   margin-top:18px;
@@ -107,36 +111,21 @@ button{
   font-weight:600;
   cursor:pointer;
   color:#020617;
-  font-size:15px;
 }
+
 button:hover{background:#0ea5e9}
 
-/* RESULT */
-.result h4{
-  margin:0 0 12px;
-  color:var(--success);
-}
-.result-item{
-  margin-bottom:10px;
-  font-size:14px;
-}
 .badge{
   padding:4px 10px;
   border-radius:12px;
   font-size:12px;
   font-weight:600;
 }
+
 .low{background:#16a34a;color:#020617}
 .medium{background:#facc15;color:#020617}
 .high{background:#ef4444;color:white}
 
-ul{
-  margin:8px 0 0 18px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* FOOTER */
 footer{
   border-top:1px solid var(--border);
   text-align:center;
@@ -144,49 +133,48 @@ footer{
   font-size:13px;
   color:var(--muted);
 }
+/* DPDP SCORE BAR */
 
-.dpdp-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
+.score-bar{
+  width:100%;
+  background:#1e293b;
+  border-radius:8px;
+  height:10px;
+  margin-top:6px;
+  overflow:hidden;
 }
 
-.dpdp-item {
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.score-fill{
+  height:100%;
+  background:#22c55e;
+  width:0%;
+  transition:width 0.4s ease;
 }
 
-.dpdp-ok {
-  color: #22c55e;
-  font-weight: bold;
+/* RISK METER */
+
+.risk-box{
+  padding:10px 14px;
+  border-radius:8px;
+  display:inline-block;
+  font-weight:600;
+  margin-top:6px;
 }
 
-.dpdp-miss {
-  color: #ef4444;
-  font-weight: bold;
+.risk-low{
+  background:#22c55e33;
+  color:#22c55e;
 }
 
-.explain {
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--muted);
+.risk-medium{
+  background:#facc1533;
+  color:#facc15;
 }
 
-.disclaimer {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-  line-height: 1.5;
+.risk-high{
+  background:#ef444433;
+  color:#ef4444;
 }
-
 </style>
 </head>
 
@@ -194,37 +182,35 @@ footer{
 
 <!-- NAVBAR -->
 <nav>
-  <div class="logo">PrivCheckr</div>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="analyze.html">Analyze</a>
-    <a href="about.html">About</a>
-    <a href="faq.html">Trust & FAQ</a>
+  <a href="/dashboard.html" class="logo">PrivCheckr</a>
+  <div class="nav-links">
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/about.html">About</a>
+    <a href="/faq.html">FAQ</a>
+    <a href="#" onclick="logout()" style="color:#ef4444">Logout</a>
   </div>
 </nav>
 
-<!-- HEADER -->
 <div class="header">
   <h1>Analyze Privacy Policy</h1>
-  <p>Paste a privacy policy below to understand data practices, risks, and DPDP compliance.</p>
+  <p style="color:var(--muted)">
+    Paste a privacy policy below to understand risks and DPDP compliance.
+  </p>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="main">
 
-  <!-- INPUT -->
   <div class="card">
     <h3>Privacy Policy Text</h3>
     <textarea id="policyText"
-      placeholder="Paste the privacy policy or terms & conditions text here..."></textarea>
+      placeholder="Paste privacy policy text here..."></textarea>
     <button onclick="analyzePolicy()">Analyze Policy</button>
   </div>
 
-  <!-- RESULT -->
-  <div class="card result">
+  <div class="card">
     <h3>Analysis Result</h3>
     <div id="output">
-      <p class="result-item" style="color:var(--muted);">
+      <p style="color:var(--muted)">
         Results will appear here after analysis.
       </p>
     </div>
@@ -233,11 +219,27 @@ footer{
 </div>
 
 <footer>
-© 2026 PrivCheckr — Understand Privacy Policies Before You Consent
+© 2026 PrivCheckr — Secure AI Privacy Analysis
 </footer>
 
 <script>
+
+// ===== PROTECT PAGE =====
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "/login.html";
+}
+
+// ===== LOGOUT =====
+function logout(){
+  localStorage.removeItem("token");
+  window.location.href = "/";
+}
+
+// ===== ANALYZE FUNCTION =====
 async function analyzePolicy(){
+
   const text = document.getElementById("policyText").value.trim();
   const output = document.getElementById("output");
 
@@ -249,82 +251,81 @@ async function analyzePolicy(){
   output.innerHTML = "<p style='color:#94a3b8'>Analyzing...</p>";
 
   try{
-    const res = await fetch("http://127.0.0.1:8000/analyze",{
+
+    const res = await fetch("/analyze",{
       method:"POST",
-      headers:{ "Content-Type":"application/json" },
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + token
+      },
       body:JSON.stringify({ policy_text:text })
     });
 
     const data = await res.json();
+
+    if(!res.ok){
+      output.innerHTML = `
+        <p style="color:#ef4444">
+          ${data.detail || "Analysis failed."}
+        </p>`;
+      return;
+    }
 
     let riskClass = "low";
     if(data.risk_level === "Medium") riskClass = "medium";
     if(data.risk_level === "High") riskClass = "high";
 
     output.innerHTML = `
-    <div class="result-item"><b>Detected Language:</b> ${data.detected_language}</div>
-    <div class="result-item"><b>Data Types:</b> ${data.data_types.join(", ") || "None"}</div>
-    <div class="result-item"><b>DPDP Score:</b> ${data.dpdp_score}</div>
-    <div class="result-item">
-      <b>Risk Level:</b>
-      <span class="badge ${riskClass}">${data.risk_level}</span>
-    </div>
 
-    <hr style="border-color:var(--border);margin:12px 0">
+<p><b>Detected Language:</b> ${data.detected_language}</p>
 
-    <div class="result-item"><b>DPDP Compliance Breakdown</b></div>
-    <div class="dpdp-grid">
-      <div class="dpdp-item">
-        Consent
-        <span class="${data.dpdp_breakdown.consent ? 'dpdp-ok' : 'dpdp-miss'}">
-          ${data.dpdp_breakdown.consent ? '✔' : '✖'}
-        </span>
-      </div>
-      <div class="dpdp-item">
-        Purpose Limitation
-        <span class="${data.dpdp_breakdown.purpose ? 'dpdp-ok' : 'dpdp-miss'}">
-          ${data.dpdp_breakdown.purpose ? '✔' : '✖'}
-        </span>
-      </div>
-      <div class="dpdp-item">
-        Data Retention
-        <span class="${data.dpdp_breakdown.retention ? 'dpdp-ok' : 'dpdp-miss'}">
-          ${data.dpdp_breakdown.retention ? '✔' : '✖'}
-        </span>
-      </div>
-      <div class="dpdp-item">
-        User Rights
-        <span class="${data.dpdp_breakdown.user_rights ? 'dpdp-ok' : 'dpdp-miss'}">
-          ${data.dpdp_breakdown.user_rights ? '✔' : '✖'}
-        </span>
-      </div>
-      <div class="dpdp-item">
-        Grievance Mechanism
-        <span class="${data.dpdp_breakdown.grievance ? 'dpdp-ok' : 'dpdp-miss'}">
-          ${data.dpdp_breakdown.grievance ? '✔' : '✖'}
-        </span>
-      </div>
-    </div>
+<p><b>Data Types Detected:</b> 
+${data.data_types.length ? data.data_types.join(", ") : "None"}
+</p>
 
-    <div class="result-item" style="margin-top:14px"><b>Why this result?</b></div>
-    <ul class="explain">
-      ${data.explanation.map(e => `<li>${e}</li>`).join("")}
-    </ul>
+<p><b>DPDP Score:</b> ${data.dpdp_score}</p>
 
-    <div class="result-item" style="margin-top:12px"><b>Recommendations</b></div>
-    <ul>
-      ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
-    </ul>
-    <div class="disclaimer">
-      Note: This analysis is for informational purposes only and does not constitute legal advice.
-    </div>
-  `; 
+<p>
+<b>Risk Level:</b>
+<span class="badge ${riskClass}">
+${data.risk_level}
+</span>
+</p>
 
-  }catch{
+<hr style="border-color:#1e293b">
+
+<h4>DPDP Compliance Breakdown</h4>
+
+<ul>
+<li>Consent: ${data.dpdp_breakdown.consent ? "✔ Present" : "✖ Missing"}</li>
+<li>Purpose Limitation: ${data.dpdp_breakdown.purpose ? "✔ Present" : "✖ Missing"}</li>
+<li>Data Retention: ${data.dpdp_breakdown.retention ? "✔ Present" : "✖ Missing"}</li>
+<li>User Rights: ${data.dpdp_breakdown.user_rights ? "✔ Present" : "✖ Missing"}</li>
+<li>Grievance Mechanism: ${data.dpdp_breakdown.grievance ? "✔ Present" : "✖ Missing"}</li>
+</ul>
+
+<hr style="border-color:#1e293b">
+
+<h4>Explanation</h4>
+<ul>
+${data.explanation.map(e => `<li>${e}</li>`).join("")}
+</ul>
+
+<hr style="border-color:#1e293b">
+
+<h4>Recommendations</h4>
+<ul>
+${data.recommendations.map(r => `<li>${r}</li>`).join("")}
+</ul>
+
+`;
+
+  } catch {
     output.innerHTML =
       "<p style='color:#ef4444'>Unable to connect to backend.</p>";
   }
 }
+
 </script>
 
 </body>
