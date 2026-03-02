@@ -189,8 +189,9 @@ footer{
 
   <div class="nav-right">
     <a href="/analyze.html">Analyze</a>
-    <a href="#" onclick="viewHistory()">My Analyses</a>
-    <a href="/about.html">About</a>
+<a href="/my_analyses.html">
+View My Analyses
+</a>    <a href="/about.html">About</a>
     <a href="/faq.html">FAQ</a>
 
     <div class="profile" onclick="toggleDropdown()">
@@ -211,8 +212,9 @@ footer{
 
     <div class="actions">
       <a href="/analyze.html" class="btn btn-primary">Analyze New Policy</a>
-      <a href="#" class="btn btn-success" onclick="viewHistory()">View My Analyses</a>
-    </div>
+<a href="/my_analyses.html" class="btn btn-success">
+View My Analyses
+</a>    </div>
   </div>
 
   <div class="grid">
@@ -295,21 +297,41 @@ function logout(){
 
 // View History
 async function viewHistory(){
+
   try{
+
     const res = await fetch("/my-analyses",{
-      headers:{ "Authorization":"Bearer " + token }
+      headers:{
+        "Authorization":"Bearer " + token
+      }
     });
 
     const data = await res.json();
 
-    if(res.ok){
-      alert("You have " + data.length + " stored analyses.");
-    } else {
-      alert("Unable to fetch history.");
+    if(!res.ok){
+      alert("Unable to fetch analyses.");
+      return;
     }
 
+    if(data.length === 0){
+      alert("No analyses found.");
+      return;
+    }
+
+    let list = "Your Analyses:\n\n";
+
+    data.forEach((item,i)=>{
+      list +=
+      (i+1) + ". " +
+      "Language: " + item.detected_language +
+      " | Risk: " + item.risk_level +
+      " | Score: " + item.dpdp_score + "\n";
+    });
+
+    alert(list);
+
   }catch{
-    alert("Server error.");
+    alert("Server connection error.");
   }
 }
 

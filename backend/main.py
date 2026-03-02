@@ -276,7 +276,25 @@ def get_user_analyses(
         Analysis.owner_id == current_user.id
     ).all()
 
+@app.delete("/delete-analysis/{analysis_id}")
+def delete_analysis(
+    analysis_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
 
+    analysis = db.query(Analysis).filter(
+        Analysis.id == analysis_id,
+        Analysis.owner_id == current_user.id
+    ).first()
+
+    if not analysis:
+        raise HTTPException(status_code=404, detail="Analysis not found")
+
+    db.delete(analysis)
+    db.commit()
+
+    return {"message":"Deleted successfully"}
 # ============================================================
 # FRONTEND ROUTES
 # ============================================================
@@ -318,3 +336,7 @@ def serve_about():
 @app.get("/faq.html", response_class=FileResponse)
 def serve_faq():
     return os.path.join(frontend_path, "faq.html")
+
+@app.get("/my_analyses.html", response_class=FileResponse)
+def serve_my_analyses():
+    return os.path.join(frontend_path, "my_analyses.html")

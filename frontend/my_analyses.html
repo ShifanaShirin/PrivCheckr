@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Analyses | PrivCheckr</title>
+
+<style>
+
+:root{
+  --bg:#020617;
+  --panel:#0b1220;
+  --border:#1e293b;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --danger:#ef4444;
+}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAVBAR */
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  border-bottom:1px solid var(--border);
+}
+
+.logo{
+  color:var(--primary);
+  font-weight:600;
+  text-decoration:none;
+}
+
+.nav-links{
+  display:flex;
+  gap:25px;
+}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:50px 40px;
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.policy{
+  background:#020617;
+  border:1px solid var(--border);
+  padding:15px;
+  border-radius:8px;
+  max-height:150px;
+  overflow:auto;
+  font-size:13px;
+}
+
+.result{
+  margin-top:10px;
+  color:var(--muted);
+}
+
+button{
+  margin-top:10px;
+  padding:8px 15px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.delete{
+  background:var(--danger);
+  color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<a href="/dashboard.html" class="logo">PrivCheckr</a>
+
+<div class="nav-links">
+<a href="/dashboard.html">Dashboard</a>
+<a href="/analyze.html">Analyze</a>
+<a href="/about.html">About</a>
+<a href="/faq.html">FAQ</a>
+<a href="#" onclick="logout()" style="color:#ef4444">Logout</a>
+</div>
+
+</nav>
+
+<div class="container">
+
+<h2>My Privacy Policy Analyses</h2>
+
+<div id="analysisList">
+Loading analyses...
+</div>
+
+</div>
+
+<script>
+
+const token = localStorage.getItem("token");
+
+if(!token){
+  window.location.href="/login.html";
+}
+
+function logout(){
+  localStorage.removeItem("token");
+  window.location.href="/";
+}
+
+async function loadAnalyses(){
+
+  const container=document.getElementById("analysisList");
+
+  try{
+
+    const res=await fetch("/my-analyses",{
+      headers:{
+        "Authorization":"Bearer "+token
+      }
+    });
+
+    const data=await res.json();
+
+    if(data.length===0){
+      container.innerHTML="<p>No analyses yet.</p>";
+      return;
+    }
+
+    container.innerHTML="";
+
+    data.forEach(a=>{
+
+      const card=document.createElement("div");
+      card.className="card";
+
+      card.innerHTML=`
+
+        <div class="policy">${a.policy_text}</div>
+
+        <div class="result">
+        Language: <b>${a.detected_language}</b><br>
+        Risk Level: <b>${a.risk_level}</b><br>
+        DPDP Score: <b>${a.dpdp_score}</b>
+        </div>
+
+        <button class="delete" onclick="deleteAnalysis(${a.id})">
+        Delete
+        </button>
+      `;
+
+      container.appendChild(card);
+
+    });
+
+  }catch{
+    container.innerHTML="Failed to load analyses.";
+  }
+
+}
+
+async function deleteAnalysis(id){
+
+  if(!confirm("Delete this analysis?")) return;
+
+  await fetch("/delete-analysis/"+id,{
+    method:"DELETE",
+    headers:{
+      "Authorization":"Bearer "+token
+    }
+  });
+
+  loadAnalyses();
+}
+
+loadAnalyses();
+
+</script>
+
+</body>
+</html>
