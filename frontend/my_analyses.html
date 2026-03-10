@@ -68,9 +68,10 @@ nav{
   border:1px solid var(--border);
   padding:15px;
   border-radius:8px;
-  max-height:150px;
+  max-height:160px;
   overflow:auto;
   font-size:13px;
+  white-space:pre-wrap;
 }
 
 .result{
@@ -135,20 +136,27 @@ function logout(){
 
 async function loadAnalyses(){
 
-  const container=document.getElementById("analysisList");
+  const container = document.getElementById("analysisList");
 
   try{
 
-    const res=await fetch("/my-analyses",{
+    const res = await fetch("/my-analyses",{
       headers:{
         "Authorization":"Bearer "+token
       }
     });
 
-    const data=await res.json();
+    const text = await res.text();
 
-    if(data.length===0){
-      container.innerHTML="<p>No analyses yet.</p>";
+    if(!res.ok){
+      container.innerHTML = "Server error: " + text;
+      return;
+    }
+
+    const data = JSON.parse(text);
+
+    if(data.length === 0){
+      container.innerHTML = "<p>No analyses yet.</p>";
       return;
     }
 
@@ -159,29 +167,28 @@ async function loadAnalyses(){
       const card=document.createElement("div");
       card.className="card";
 
-      card.innerHTML=`
+      card.innerHTML = `
+      <div class="policy">${a.policy_text}</div>
 
-        <div class="policy">${a.policy_text}</div>
+      <div class="result">
+      Language: <b>${a.detected_language}</b><br>
+      Risk Level: <b>${a.risk_level}</b><br>
+      DPDP Score: <b>${a.dpdp_score}</b>
+      </div>
 
-        <div class="result">
-        Language: <b>${a.detected_language}</b><br>
-        Risk Level: <b>${a.risk_level}</b><br>
-        DPDP Score: <b>${a.dpdp_score}</b>
-        </div>
-
-        <button class="delete" onclick="deleteAnalysis(${a.id})">
-        Delete
-        </button>
+      <button class="delete" onclick="deleteAnalysis(${a.id})">
+      Delete
+      </button>
       `;
 
       container.appendChild(card);
 
     });
 
-  }catch{
-    container.innerHTML="Failed to load analyses.";
+  }catch(err){
+    container.innerHTML="Connection failed.";
+    console.error(err);
   }
-
 }
 
 async function deleteAnalysis(id){

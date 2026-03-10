@@ -40,9 +40,10 @@ class Token(BaseModel):
 
 class AnalysisResponse(BaseModel):
     id: int
+    policy_text: str
     detected_language: str
     risk_level: str
     dpdp_score: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
