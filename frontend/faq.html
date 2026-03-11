@@ -1,161 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Trust & FAQ | PrivCheckr</title>
+  <meta charset="UTF-8">
+  <title>Trust & FAQ | PrivCheckr</title>
 
-<style>
-:root{
-  --bg:#020617;
-  --panel:#0b1220;
-  --border:#1e293b;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-  --danger:#ef4444;
-}
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1220;
+      --border: #1e293b;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --danger: #ef4444;
+    }
 
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  border-bottom:1px solid var(--border);
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.logo{
-  font-weight:600;
-  color:var(--primary);
-  font-size:18px;
-  text-decoration:none;
-}
+    .logo {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 18px;
+      text-decoration: none;
+    }
 
-.nav-links{
-  display:flex;
-  gap:25px;
-  align-items:center;
-}
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
 
-.nav-links a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-}
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.nav-links a:hover{
-  color:var(--primary);
-}
+    .nav-links a:hover {
+      color: var(--primary);
+    }
 
-.section{
-  max-width:900px;
-  margin:auto;
-  padding:60px 40px;
-}
+    .section {
+      max-width: 900px;
+      margin: auto;
+      padding: 60px 40px;
+    }
 
-h1{
-  color:var(--primary);
-}
+    h1 {
+      color: var(--primary);
+    }
 
-h3{
-  margin-top:35px;
-}
+    h3 {
+      margin-top: 35px;
+    }
 
-p{
-  color:var(--muted);
-  line-height:1.6;
-}
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
 
-footer{
-  text-align:center;
-  color:#64748b;
-  font-size:13px;
-  padding:25px;
-  border-top:1px solid var(--border);
-}
-</style>
+    footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      padding: 25px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="/" class="logo" id="homeLink">PrivCheckr</a>
-  <div class="nav-links" id="navLinks"></div>
-</nav>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="logo" id="homeLink">PrivCheckr</a>
+    <div class="nav-links" id="navLinks"></div>
+  </nav>
 
-<div class="section">
-<h1>Trust & Frequently Asked Questions</h1>
+  <div class="section">
+    <h1>Trust & Frequently Asked Questions</h1>
 
-<h3>Does PrivCheckr store my privacy policy text?</h3>
-<p>
-PrivCheckr stores analysis results securely for logged-in users to allow viewing past analyses.
-Policy text is not shared with third parties.
-</p>
+    <h3>Does PrivCheckr store my privacy policy text?</h3>
+    <p>
+      PrivCheckr stores analysis results securely for logged-in users to allow viewing past analyses.
+      Policy text is not shared with third parties.
+    </p>
 
-<h3>Is this legal advice?</h3>
-<p>
-No. PrivCheckr provides informational insights and does not replace professional legal advice.
-</p>
+    <h3>Is this legal advice?</h3>
+    <p>
+      No. PrivCheckr provides informational insights and does not replace professional legal advice.
+    </p>
 
-<h3>Which laws does PrivCheckr consider?</h3>
-<p>
-PrivCheckr focuses on principles derived from India’s Digital Personal Data Protection (DPDP) Act, 2023.
-</p>
+    <h3>Which laws does PrivCheckr consider?</h3>
+    <p>
+      PrivCheckr focuses on principles derived from India’s Digital Personal Data Protection (DPDP) Act, 2023.
+    </p>
 
-<h3>Who can use PrivCheckr?</h3>
-<p>
-Students, app users, developers, researchers, and anyone who wants to understand privacy policies clearly.
-</p>
+    <h3>Who can use PrivCheckr?</h3>
+    <p>
+      Students, app users, developers, researchers, and anyone who wants to understand privacy policies clearly.
+    </p>
 
-<h3>Is PrivCheckr free?</h3>
-<p>
-Yes. PrivCheckr is currently provided as an academic and research project.
-</p>
-</div>
+    <h3>Is PrivCheckr free?</h3>
+    <p>
+      Yes. PrivCheckr is currently provided as an academic and research project.
+    </p>
+  </div>
 
-<footer>
-© 2026 PrivCheckr — Privacy Policy Intelligence Platform
-</footer>
+  <footer>
+    © 2026 PrivCheckr — Privacy Policy Intelligence Platform
+  </footer>
 
-<script>
+  <script>
 
-const token = localStorage.getItem("token");
-const nav = document.getElementById("navLinks");
-const homeLink = document.getElementById("homeLink");
+    const token = localStorage.getItem("token");
+    const nav = document.getElementById("navLinks");
+    const homeLink = document.getElementById("homeLink");
 
-if (token) {
-  homeLink.href = "/dashboard.html";
+    if (token) {
+      homeLink.href = "/dashboard.html";
 
-  nav.innerHTML = `
+      nav.innerHTML = `
     <a href="/dashboard.html">Dashboard</a>
     <a href="/analyze.html">Analyze</a>
     <a href="/about.html">About</a>
     <a href="#" onclick="logout()" style="color:#ef4444">Logout</a>
   `;
-} else {
-  homeLink.href = "/";
+    } else {
+      homeLink.href = "/";
 
-  nav.innerHTML = `
+      nav.innerHTML = `
     <a href="/">Home</a>
     <a href="/about.html">About</a>
     <a href="/login.html">Login</a>
     <a href="/register.html">Register</a>
   `;
-}
+    }
 
-function logout(){
-  localStorage.removeItem("token");
-  window.location.href = "/";
-}
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
 
-</script>
+  </script>
 
 </body>
+
 </html>

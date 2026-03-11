@@ -1,218 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>PrivCheckr | Understand Privacy Policies Before You Consent</title>
+  <meta charset="UTF-8">
+  <title>PrivCheckr | Understand Privacy Policies Before You Consent</title>
 
-<style>
-:root{
-  --bg:#020617; 
-  --panel:#0b1220; 
-  --border:#1e293b;
-  --text:#e5e7eb; 
-  --muted:#94a3b8;
-  --primary:#38bdf8; 
-  --success:#22c55e;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  border-bottom:1px solid var(--border);
-}
-.logo{
-  font-weight:600;
-  color:var(--primary);
-  text-decoration:none;
-  font-size:18px;
-}
-nav a{
-  margin-left:25px;
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px
-}
-nav a:hover{color:var(--primary)}
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1220;
+      --border: #1e293b;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+    }
 
-.hero{
-  max-width:1200px;
-  margin:auto;
-  padding:90px 40px 70px;
-  text-align:center;
-}
-.hero h1{font-size:44px;line-height:1.25}
-.hero h1 span{color:var(--primary)}
-.hero p{
-  max-width:720px;
-  margin:18px auto 35px;
-  color:var(--muted);
-  font-size:17px;
-  line-height:1.6
-}
-.cta{
-  display:inline-block;
-  padding:14px 36px;
-  background:var(--primary);
-  color:#020617;
-  text-decoration:none;
-  border-radius:8px;
-  font-weight:600
-}
+    * {
+      box-sizing: border-box
+    }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:25px;
-  max-width:900px;
-  margin:50px auto 0;
-}
-.stat{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:22px
-}
-.stat h3{color:var(--success);margin:0 0 5px}
-.stat p{margin:0;font-size:13px;color:var(--muted)}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-section{
-  max-width:1200px;
-  margin:auto;
-  padding:70px 40px
-}
-section h2{
-  text-align:center;
-  font-size:30px;
-  margin-bottom:15px
-}
-section p{
-  max-width:700px;
-  margin:0 auto;
-  text-align:center;
-  color:var(--muted);
-  line-height:1.6
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:25px;
-  margin-top:40px
-}
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:26px;
-}
-.card h3{color:var(--primary);margin-bottom:10px;font-size:16px}
-.card p{font-size:14px;color:var(--muted);line-height:1.6}
+    .logo {
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 18px;
+    }
 
-footer{
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:25px;
-  font-size:13px;
-  color:var(--muted)
-}
-</style>
+    nav a {
+      margin-left: 25px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px
+    }
+
+    nav a:hover {
+      color: var(--primary)
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: auto;
+      padding: 90px 40px 70px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 44px;
+      line-height: 1.25
+    }
+
+    .hero h1 span {
+      color: var(--primary)
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 18px auto 35px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6
+    }
+
+    .cta {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--primary);
+      color: #020617;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 25px;
+      max-width: 900px;
+      margin: 50px auto 0;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px
+    }
+
+    .stat h3 {
+      color: var(--success);
+      margin: 0 0 5px
+    }
+
+    .stat p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 70px 40px
+    }
+
+    section h2 {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 15px
+    }
+
+    section p {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.6
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-top: 40px
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px;
+    }
+
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-size: 16px
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+      color: var(--muted)
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="/" class="logo">PrivCheckr</a>
-  <div id="navLinks"></div>
-</nav>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="logo">PrivCheckr</a>
+    <div id="navLinks"></div>
+  </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>
-    <span>PrivCheckr</span><br>
-    Understand Privacy Policies Before You Consent
-  </h1>
+  <!-- HERO -->
+  <div class="hero">
+    <h1>
+      <span>PrivCheckr</span><br>
+      Understand Privacy Policies Before You Consent
+    </h1>
 
-  <p>
-    PrivCheckr helps you instantly understand what a privacy policy really means —
-    what data is collected, how risky it is, and whether it aligns with DPDP principles.
-  </p>
+    <p>
+      PrivCheckr helps you instantly understand what a privacy policy really means —
+      what data is collected, how risky it is, and whether it aligns with DPDP principles.
+    </p>
 
-  <a href="/login.html" class="cta" id="ctaButton">
-    Login to Analyze
-  </a>
+    <a href="/login.html" class="cta" id="ctaButton">
+      Login to Analyze
+    </a>
 
-  <div class="stats">
-    <div class="stat">
-      <h3>Multilingual</h3>
-      <p>Supports multiple languages</p>
-    </div>
-    <div class="stat">
-      <h3>DPDP-Aware</h3>
-      <p>Aligned with Indian data law</p>
-    </div>
-    <div class="stat">
-      <h3>Instant</h3>
-      <p>Results in seconds</p>
-    </div>
-    <div class="stat">
-      <h3>Explainable</h3>
-      <p>No legal jargon</p>
-    </div>
-  </div>
-</div>
-
-<!-- FEATURES -->
-<section>
-  <h2>What You Get</h2>
-  <p>
-    PrivCheckr converts long legal text into clear insights that help you
-    make informed consent decisions.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3>Data Collection Summary</h3>
-      <p>Clearly shows what personal or sensitive data is being collected.</p>
-    </div>
-    <div class="card">
-      <h3>Privacy Risk Level</h3>
-      <p>Highlights whether the policy poses low, medium, or high privacy risk.</p>
-    </div>
-    <div class="card">
-      <h3>DPDP Compliance Score</h3>
-      <p>Indicates how well the policy aligns with DPDP principles.</p>
-    </div>
-    <div class="card">
-      <h3>Actionable Recommendations</h3>
-      <p>Explains what is missing or unclear in the policy.</p>
+    <div class="stats">
+      <div class="stat">
+        <h3>Multilingual</h3>
+        <p>Supports multiple languages</p>
+      </div>
+      <div class="stat">
+        <h3>DPDP-Aware</h3>
+        <p>Aligned with Indian data law</p>
+      </div>
+      <div class="stat">
+        <h3>Instant</h3>
+        <p>Results in seconds</p>
+      </div>
+      <div class="stat">
+        <h3>Explainable</h3>
+        <p>No legal jargon</p>
+      </div>
     </div>
   </div>
-</section>
 
-<footer>
-© 2026 PrivCheckr — Understand Privacy Policies Before You Consent
-</footer>
+  <!-- FEATURES -->
+  <section>
+    <h2>What You Get</h2>
+    <p>
+      PrivCheckr converts long legal text into clear insights that help you
+      make informed consent decisions.
+    </p>
 
-<script>
+    <div class="grid">
+      <div class="card">
+        <h3>Data Collection Summary</h3>
+        <p>Clearly shows what personal or sensitive data is being collected.</p>
+      </div>
+      <div class="card">
+        <h3>Privacy Risk Level</h3>
+        <p>Highlights whether the policy poses low, medium, or high privacy risk.</p>
+      </div>
+      <div class="card">
+        <h3>DPDP Compliance Score</h3>
+        <p>Indicates how well the policy aligns with DPDP principles.</p>
+      </div>
+      <div class="card">
+        <h3>Actionable Recommendations</h3>
+        <p>Explains what is missing or unclear in the policy.</p>
+      </div>
+    </div>
+  </section>
 
-// If logged in → Redirect directly to dashboard
-if (localStorage.getItem("token")) {
-  window.location.href = "/dashboard.html";
-}
+  <footer>
+    © 2026 PrivCheckr — Understand Privacy Policies Before You Consent
+  </footer>
 
-// Navbar logic (only for non-logged users)
-const nav = document.getElementById("navLinks");
+  <script>
 
-nav.innerHTML = `
+    // If logged in → Redirect directly to dashboard
+    if (localStorage.getItem("token")) {
+      window.location.href = "/dashboard.html";
+    }
+
+    // Navbar logic (only for non-logged users)
+    const nav = document.getElementById("navLinks");
+
+    nav.innerHTML = `
   <a href="/">Home</a>
   <a href="/about.html">About</a>
   <a href="/faq.html">Trust & FAQ</a>
@@ -220,7 +263,8 @@ nav.innerHTML = `
   <a href="/register.html">Register</a>
 `;
 
-</script>
+  </script>
 
 </body>
+
 </html>

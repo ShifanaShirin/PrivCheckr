@@ -1,281 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Analyze Privacy Policy | PrivCheckr</title>
+  <meta charset="UTF-8">
+  <title>Analyze Privacy Policy | PrivCheckr</title>
 
-<style>
-:root{
-  --bg:#020617;
-  --panel:#0b1220;
-  --border:#1e293b;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-  --success:#22c55e;
-  --danger:#ef4444;
-}
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1220;
+      --border: #1e293b;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
 
-*{box-sizing:border-box}
+    * {
+      box-sizing: border-box
+    }
 
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-/* NAVBAR */
+    /* NAVBAR */
 
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  border-bottom:1px solid var(--border);
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.logo{
-  font-weight:600;
-  color:var(--primary);
-  font-size:18px;
-  text-decoration:none;
-}
+    .logo {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 18px;
+      text-decoration: none;
+    }
 
-.nav-links{
-  display:flex;
-  gap:25px;
-  align-items:center;
-}
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
 
-.nav-links a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-}
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.nav-links a:hover{
-  color:var(--primary);
-}
+    .nav-links a:hover {
+      color: var(--primary);
+    }
 
-/* HEADER */
+    /* HEADER */
 
-.header{
-  max-width:1100px;
-  margin:auto;
-  padding:50px 40px 30px;
-}
+    .header {
+      max-width: 1100px;
+      margin: auto;
+      padding: 50px 40px 30px;
+    }
 
-.header h1{
-  font-size:34px;
-  margin-bottom:10px;
-}
+    .header h1 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
 
-/* MAIN */
+    /* MAIN */
 
-.main{
-  max-width:1100px;
-  margin:auto;
-  padding:0 40px 80px;
-  display:grid;
-  grid-template-columns:1.1fr 0.9fr;
-  gap:40px;
-}
+    .main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 40px 80px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+    }
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:28px;
-}
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+    }
 
-textarea{
-  width:100%;
-  height:260px;
-  margin-top:12px;
-  padding:16px;
-  background:#020617;
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:8px;
-  resize:none;
-}
+    textarea {
+      width: 100%;
+      height: 260px;
+      margin-top: 12px;
+      padding: 16px;
+      background: #020617;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      resize: none;
+    }
 
-button{
-  margin-top:18px;
-  width:100%;
-  padding:14px;
-  background:var(--primary);
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-  color:#020617;
-}
+    button {
+      margin-top: 18px;
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #020617;
+    }
 
-button:hover{background:#0ea5e9}
+    button:hover {
+      background: #0ea5e9
+    }
 
-.badge{
-  padding:4px 10px;
-  border-radius:12px;
-  font-size:12px;
-  font-weight:600;
-}
+    .badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
 
-.low{background:#16a34a;color:#020617}
-.medium{background:#facc15;color:#020617}
-.high{background:#ef4444;color:white}
+    .low {
+      background: #16a34a;
+      color: #020617
+    }
 
-footer{
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:25px;
-  font-size:13px;
-  color:var(--muted);
-}
-/* DPDP SCORE BAR */
+    .medium {
+      background: #facc15;
+      color: #020617
+    }
 
-.score-bar{
-  width:100%;
-  background:#1e293b;
-  border-radius:8px;
-  height:10px;
-  margin-top:6px;
-  overflow:hidden;
-}
+    .high {
+      background: #ef4444;
+      color: white
+    }
 
-.score-fill{
-  height:100%;
-  background:#22c55e;
-  width:0%;
-  transition:width 0.4s ease;
-}
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+      color: var(--muted);
+    }
 
-/* RISK METER */
+    /* DPDP SCORE BAR */
 
-.risk-box{
-  padding:10px 14px;
-  border-radius:8px;
-  display:inline-block;
-  font-weight:600;
-  margin-top:6px;
-}
+    .score-bar {
+      width: 100%;
+      background: #1e293b;
+      border-radius: 8px;
+      height: 10px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
 
-.risk-low{
-  background:#22c55e33;
-  color:#22c55e;
-}
+    .score-fill {
+      height: 100%;
+      background: #22c55e;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
 
-.risk-medium{
-  background:#facc1533;
-  color:#facc15;
-}
+    /* RISK METER */
 
-.risk-high{
-  background:#ef444433;
-  color:#ef4444;
-}
-</style>
+    .risk-box {
+      padding: 10px 14px;
+      border-radius: 8px;
+      display: inline-block;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .risk-low {
+      background: #22c55e33;
+      color: #22c55e;
+    }
+
+    .risk-medium {
+      background: #facc1533;
+      color: #facc15;
+    }
+
+    .risk-high {
+      background: #ef444433;
+      color: #ef4444;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="/dashboard.html" class="logo">PrivCheckr</a>
-  <div class="nav-links">
-    <a href="/dashboard.html">Dashboard</a>
-    <a href="/about.html">About</a>
-    <a href="/faq.html">FAQ</a>
-    <a href="#" onclick="logout()" style="color:#ef4444">Logout</a>
-  </div>
-</nav>
-
-<div class="header">
-  <h1>Analyze Privacy Policy</h1>
-  <p style="color:var(--muted)">
-    Paste a privacy policy below to understand risks and DPDP compliance.
-  </p>
-</div>
-
-<div class="main">
-
-  <div class="card">
-    <h3>Privacy Policy Text</h3>
-    <textarea id="policyText"
-      placeholder="Paste privacy policy text here..."></textarea>
-    <button onclick="analyzePolicy()">Analyze Policy</button>
-  </div>
-
-  <div class="card">
-    <h3>Analysis Result</h3>
-    <div id="output">
-      <p style="color:var(--muted)">
-        Results will appear here after analysis.
-      </p>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/dashboard.html" class="logo">PrivCheckr</a>
+    <div class="nav-links">
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="#" onclick="logout()" style="color:#ef4444">Logout</a>
     </div>
+  </nav>
+
+  <div class="header">
+    <h1>Analyze Privacy Policy</h1>
+    <p style="color:var(--muted)">
+      Paste a privacy policy below to understand risks and DPDP compliance.
+    </p>
   </div>
 
-</div>
+  <div class="main">
 
-<footer>
-© 2026 PrivCheckr — Secure AI Privacy Analysis
-</footer>
+    <div class="card">
+      <h3>Privacy Policy Text</h3>
+      <textarea id="policyText" placeholder="Paste privacy policy text here..."></textarea>
+      <button onclick="analyzePolicy()">Analyze Policy</button>
+    </div>
 
-<script>
+    <div class="card">
+      <h3>Analysis Result</h3>
+      <div id="output">
+        <p style="color:var(--muted)">
+          Results will appear here after analysis.
+        </p>
+      </div>
+    </div>
 
-// ===== PROTECT PAGE =====
-const token = localStorage.getItem("token");
+  </div>
 
-if (!token) {
-  window.location.href = "/login.html";
-}
+  <footer>
+    © 2026 PrivCheckr — Secure AI Privacy Analysis
+  </footer>
 
-// ===== LOGOUT =====
-function logout(){
-  localStorage.removeItem("token");
-  window.location.href = "/";
-}
+  <script>
 
-// ===== ANALYZE FUNCTION =====
-async function analyzePolicy(){
+    // ===== PROTECT PAGE =====
+    const token = localStorage.getItem("token");
 
-  const text = document.getElementById("policyText").value.trim();
-  const output = document.getElementById("output");
+    if (!token) {
+      window.location.href = "/login.html";
+    }
 
-  if(!text){
-    alert("Please paste a privacy policy.");
-    return;
-  }
+    // ===== LOGOUT =====
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
 
-  output.innerHTML = "<p style='color:#94a3b8'>Analyzing...</p>";
+    // ===== ANALYZE FUNCTION =====
+    async function analyzePolicy() {
 
-  try{
+      const text = document.getElementById("policyText").value.trim();
+      const output = document.getElementById("output");
 
-    const res = await fetch("/analyze",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + token
-      },
-      body:JSON.stringify({ policy_text:text })
-    });
+      if (!text) {
+        alert("Please paste a privacy policy.");
+        return;
+      }
 
-    const data = await res.json();
+      output.innerHTML = "<p style='color:#94a3b8'>Analyzing...</p>";
 
-    if(!res.ok){
-      output.innerHTML = `
+      try {
+
+        const res = await fetch("/analyze", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ policy_text: text })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          output.innerHTML = `
         <p style="color:#ef4444">
           ${data.detail || "Analysis failed."}
         </p>`;
-      return;
-    }
+          return;
+        }
 
-    let riskClass = "low";
-    if(data.risk_level === "Medium") riskClass = "medium";
-    if(data.risk_level === "High") riskClass = "high";
+        let riskClass = "low";
+        if (data.risk_level === "Medium") riskClass = "medium";
+        if (data.risk_level === "High") riskClass = "high";
 
-    output.innerHTML = `
+        output.innerHTML = `
 
 <p><b>Detected Language:</b> ${data.detected_language}</p>
 
@@ -320,13 +336,14 @@ ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
 
 `;
 
-  } catch {
-    output.innerHTML =
-      "<p style='color:#ef4444'>Unable to connect to backend.</p>";
-  }
-}
+      } catch {
+        output.innerHTML =
+          "<p style='color:#ef4444'>Unable to connect to backend.</p>";
+      }
+    }
 
-</script>
+  </script>
 
 </body>
+
 </html>

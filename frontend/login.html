@@ -1,202 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Login | PrivCheckr</title>
+  <meta charset="UTF-8">
+  <title>Login | PrivCheckr</title>
 
-<style>
-:root{
-  --bg:#020617;
-  --panel:#0b1220;
-  --border:#1e293b;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-}
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1220;
+      --border: #1e293b;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+    }
 
-*{box-sizing:border-box}
+    * {
+      box-sizing: border-box
+    }
 
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  border-bottom:1px solid var(--border);
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.logo{
-  font-weight:600;
-  color:var(--primary);
-  text-decoration:none;
-  font-size:18px;
-}
+    .logo {
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 18px;
+    }
 
-nav a{
-  margin-left:25px;
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-}
-nav a:hover{color:var(--primary)}
+    nav a {
+      margin-left: 25px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.container{
-  min-height:calc(100vh - 80px);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    nav a:hover {
+      color: var(--primary)
+    }
 
-.card{
-  width:420px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:32px;
-}
+    .container {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.card h1{
-  margin-top:0;
-  color:var(--primary);
-  text-align:center;
-}
+    .card {
+      width: 420px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+    }
 
-.card p{
-  text-align:center;
-  color:var(--muted);
-  font-size:14px;
-}
+    .card h1 {
+      margin-top: 0;
+      color: var(--primary);
+      text-align: center;
+    }
 
-label{
-  display:block;
-  margin-top:18px;
-  font-size:14px;
-}
+    .card p {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
 
-input{
-  width:100%;
-  margin-top:6px;
-  padding:12px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:#020617;
-  color:var(--text);
-}
+    label {
+      display: block;
+      margin-top: 18px;
+      font-size: 14px;
+    }
 
-button{
-  margin-top:24px;
-  width:100%;
-  padding:14px;
-  background:var(--primary);
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-  color:#020617;
-}
-button:hover{background:#0ea5e9}
+    input {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text);
+    }
 
-.footer-text{
-  text-align:center;
-  margin-top:14px;
-  font-size:13px;
-  color:var(--muted);
-}
-.footer-text a{
-  color:var(--primary);
-  text-decoration:none;
-}
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #020617;
+    }
 
-</style>
+    button:hover {
+      background: #0ea5e9
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-text a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="/" class="logo">PrivCheckr</a>
-  <div id="navLinks"></div>
-</nav>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="logo">PrivCheckr</a>
+    <div id="navLinks"></div>
+  </nav>
 
-<div class="container">
-  <div class="card">
-    <h1>Welcome Back</h1>
-    <p>Login to access PrivCheckr</p>
+  <div class="container">
+    <div class="card">
+      <h1>Welcome Back</h1>
+      <p>Login to access PrivCheckr</p>
 
-    <label>Email Address</label>
-    <input id="loginEmail" type="email" placeholder="you@example.com">
+      <label>Email Address</label>
+      <input id="loginEmail" type="email" placeholder="you@example.com">
 
-    <label>Password</label>
-    <input id="loginPassword" type="password" placeholder="••••••••">
+      <label>Password</label>
+      <input id="loginPassword" type="password" placeholder="••••••••">
 
-    <button onclick="return validateLogin()">Login</button>
+      <button onclick="return validateLogin()">Login</button>
 
-    <div class="footer-text">
-      Don’t have an account?
-      <a href="/register.html">Create one</a>
+      <div class="footer-text">
+        Don’t have an account?
+        <a href="/register.html">Create one</a>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
+  <script>
 
-// If already logged in → go to dashboard
-if (localStorage.getItem("token")) {
-  window.location.href = "/dashboard.html";
-}
+    // If already logged in → go to dashboard
+    if (localStorage.getItem("token")) {
+      window.location.href = "/dashboard.html";
+    }
 
-// Public navbar
-const nav = document.getElementById("navLinks");
-nav.innerHTML = `
+    // Public navbar
+    const nav = document.getElementById("navLinks");
+    nav.innerHTML = `
   <a href="/">Home</a>
   <a href="/about.html">About</a>
   <a href="/faq.html">Trust & FAQ</a>
   <a href="/register.html">Register</a>
 `;
 
-async function validateLogin(){
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
+    async function validateLogin() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
 
-  if(!email || !password){
-    alert("Please fill in all fields.");
-    return false;
-  }
+      if (!email || !password) {
+        alert("Please fill in all fields.");
+        return false;
+      }
 
-  try{
-    const res = await fetch("/login",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ email, password })
-    });
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if(res.ok){
-      localStorage.setItem("token", data.access_token);
-      window.location.href = "/dashboard.html";
-    } 
-    else if (Array.isArray(data.detail)) {
-      alert(data.detail.map(err => err.msg).join("\n"));
+        if (res.ok) {
+          localStorage.setItem("token", data.access_token);
+          window.location.href = "/dashboard.html";
+        }
+        else if (Array.isArray(data.detail)) {
+          alert(data.detail.map(err => err.msg).join("\n"));
+        }
+        else {
+          alert(data.detail || "Invalid email or password.");
+        }
+
+      } catch {
+        alert("Unable to connect to server.");
+      }
+
+      return false;
     }
-    else {
-      alert(data.detail || "Invalid email or password.");
-    }
 
-  } catch {
-    alert("Unable to connect to server.");
-  }
-
-  return false;
-}
-
-</script>
+  </script>
 
 </body>
+
 </html>

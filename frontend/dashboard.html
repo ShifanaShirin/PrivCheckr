@@ -1,341 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Dashboard | PrivCheckr</title>
+  <meta charset="UTF-8">
+  <title>Dashboard | PrivCheckr</title>
 
-<style>
-:root{
-  --bg:#020617;
-  --panel:#0b1220;
-  --border:#1e293b;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-  --success:#22c55e;
-  --danger:#ef4444;
-}
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1220;
+      --border: #1e293b;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
 
-*{box-sizing:border-box}
+    * {
+      box-sizing: border-box
+    }
 
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-/* NAVBAR */
+    /* NAVBAR */
 
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  border-bottom:1px solid var(--border);
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.logo{
-  font-weight:600;
-  font-size:18px;
-  color:var(--primary);
-  text-decoration:none;
-}
+    .logo {
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--primary);
+      text-decoration: none;
+    }
 
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:25px;
-}
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
 
-.nav-right a{
-  text-decoration:none;
-  color:var(--muted);
-  font-size:14px;
-}
+    .nav-right a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+    }
 
-.nav-right a:hover{
-  color:var(--primary);
-}
+    .nav-right a:hover {
+      color: var(--primary);
+    }
 
-.profile{
-  position:relative;
-  cursor:pointer;
-  color:var(--primary);
-  font-weight:600;
-}
+    .profile {
+      position: relative;
+      cursor: pointer;
+      color: var(--primary);
+      font-weight: 600;
+    }
 
-.dropdown{
-  display:none;
-  position:absolute;
-  right:0;
-  top:28px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:8px;
-  min-width:160px;
-  padding:10px 0;
-  z-index:10;
-}
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 28px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      min-width: 160px;
+      padding: 10px 0;
+      z-index: 10;
+    }
 
-.dropdown a{
-  display:block;
-  padding:10px 15px;
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-}
+    .dropdown a {
+      display: block;
+      padding: 10px 15px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.dropdown a:hover{
-  background:#111827;
-  color:var(--primary);
-}
+    .dropdown a:hover {
+      background: #111827;
+      color: var(--primary);
+    }
 
-/* MAIN */
+    /* MAIN */
 
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:60px 40px;
-}
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 60px 40px;
+    }
 
-.hero{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:40px;
-  text-align:center;
-}
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      text-align: center;
+    }
 
-.hero h1{
-  margin:0;
-  font-size:32px;
-  color:var(--primary);
-}
+    .hero h1 {
+      margin: 0;
+      font-size: 32px;
+      color: var(--primary);
+    }
 
-.hero p{
-  margin-top:10px;
-  color:var(--muted);
-}
+    .hero p {
+      margin-top: 10px;
+      color: var(--muted);
+    }
 
-.actions{
-  margin-top:25px;
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  flex-wrap:wrap;
-}
+    .actions {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
 
-.btn{
-  padding:14px 30px;
-  border-radius:8px;
-  font-weight:600;
-  text-decoration:none;
-  cursor:pointer;
-}
+    .btn {
+      padding: 14px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-.btn-primary{
-  background:var(--primary);
-  color:#020617;
-}
+    .btn-primary {
+      background: var(--primary);
+      color: #020617;
+    }
 
-.btn-success{
-  background:var(--success);
-  color:#020617;
-}
+    .btn-success {
+      background: var(--success);
+      color: #020617;
+    }
 
-.grid{
-  margin-top:50px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:25px;
-}
+    .grid {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:25px;
-}
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+    }
 
-.card h3{
-  margin:0 0 10px;
-  color:var(--primary);
-  font-size:18px;
-}
+    .card h3 {
+      margin: 0 0 10px;
+      color: var(--primary);
+      font-size: 18px;
+    }
 
-.card p{
-  font-size:14px;
-  color:var(--muted);
-  line-height:1.6;
-}
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
 
-footer{
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:25px;
-  font-size:13px;
-  color:var(--muted);
-  margin-top:60px;
-}
-</style>
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 60px;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="/dashboard.html" class="logo">PrivCheckr</a>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/dashboard.html" class="logo">PrivCheckr</a>
 
-  <div class="nav-right">
-    <a href="/analyze.html">Analyze</a>
-<a href="/my_analyses.html">
-View My Analyses
-</a>    <a href="/about.html">About</a>
-    <a href="/faq.html">FAQ</a>
+    <div class="nav-right">
+      <a href="/analyze.html">Analyze</a>
+      <a href="/my_analyses.html">
+        View My Analyses
+      </a> <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
 
-    <div class="profile" onclick="toggleDropdown()">
-      <span id="profileName">Profile ▾</span>
+      <div class="profile" onclick="toggleDropdown()">
+        <span id="profileName">Profile ▾</span>
 
-      <div class="dropdown" id="dropdownMenu">
-        <a href="#" onclick="logout()">Logout</a>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="#" onclick="logout()">Logout</a>
+        </div>
       </div>
     </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="hero">
+      <h1>Welcome Back 👋</h1>
+      <p id="welcomeText">Loading user information...</p>
+
+      <div class="actions">
+        <a href="/analyze.html" class="btn btn-primary">Analyze New Policy</a>
+        <a href="/my_analyses.html" class="btn btn-success">
+          View My Analyses
+        </a>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>Your Activity</h3>
+        <p>Track all privacy policies you have analyzed and review their compliance history.</p>
+      </div>
+
+      <div class="card">
+        <h3>DPDP Compliance</h3>
+        <p>PrivCheckr evaluates policies based on consent, purpose limitation, retention and grievance redressal
+          principles.</p>
+      </div>
+
+      <div class="card">
+        <h3>Multilingual Support</h3>
+        <p>Submit privacy policies in different languages — automatic detection and translation is applied before
+          evaluation.</p>
+      </div>
+
+      <div class="card">
+        <h3>Instant Risk Assessment</h3>
+        <p>Get immediate risk level and recommendations before giving consent to any service.</p>
+      </div>
+
+    </div>
+
   </div>
-</nav>
 
-<div class="container">
+  <footer>
+    © 2026 PrivCheckr — Secure AI-Based Privacy Policy Analysis
+  </footer>
 
-  <div class="hero">
-    <h1>Welcome Back 👋</h1>
-    <p id="welcomeText">Loading user information...</p>
+  <script>
 
-    <div class="actions">
-      <a href="/analyze.html" class="btn btn-primary">Analyze New Policy</a>
-<a href="/my_analyses.html" class="btn btn-success">
-View My Analyses
-</a>    </div>
-  </div>
+    // PROTECT PAGE
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login.html";
+    }
 
-  <div class="grid">
-
-    <div class="card">
-      <h3>Your Activity</h3>
-      <p>Track all privacy policies you have analyzed and review their compliance history.</p>
-    </div>
-
-    <div class="card">
-      <h3>DPDP Compliance</h3>
-      <p>PrivCheckr evaluates policies based on consent, purpose limitation, retention and grievance redressal principles.</p>
-    </div>
-
-    <div class="card">
-      <h3>Multilingual Support</h3>
-      <p>Submit privacy policies in different languages — automatic detection and translation is applied before evaluation.</p>
-    </div>
-
-    <div class="card">
-      <h3>Instant Risk Assessment</h3>
-      <p>Get immediate risk level and recommendations before giving consent to any service.</p>
-    </div>
-
-  </div>
-
-</div>
-
-<footer>
-© 2026 PrivCheckr — Secure AI-Based Privacy Policy Analysis
-</footer>
-
-<script>
-
-// PROTECT PAGE
-const token = localStorage.getItem("token");
-if (!token) {
-  window.location.href = "/login.html";
-}
-
-// Decode JWT
-function parseJwt(token) {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch {
-    return null;
-  }
-}
-
-const payload = parseJwt(token);
-
-if (payload && payload.name) {
-  document.getElementById("welcomeText").innerText =
-    "Logged in as: " + payload.name;
-  document.getElementById("profileName").innerText =
-    payload.name + " ▾";
-} else {
-  document.getElementById("welcomeText").innerText =
-    "Welcome to your privacy dashboard.";
-}
-
-// Dropdown
-function toggleDropdown(){
-  const menu = document.getElementById("dropdownMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-// Close dropdown when clicking outside
-window.onclick = function(event){
-  if(!event.target.closest('.profile')){
-    document.getElementById("dropdownMenu").style.display = "none";
-  }
-}
-
-// Logout
-function logout(){
-  localStorage.removeItem("token");
-  window.location.href = "/";
-}
-
-// View History
-async function viewHistory(){
-
-  try{
-
-    const res = await fetch("/my-analyses",{
-      headers:{
-        "Authorization":"Bearer " + token
+    // Decode JWT
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch {
+        return null;
       }
-    });
-
-    const data = await res.json();
-
-    if(!res.ok){
-      alert("Unable to fetch analyses.");
-      return;
     }
 
-    if(data.length === 0){
-      alert("No analyses found.");
-      return;
+    const payload = parseJwt(token);
+
+    if (payload && payload.name) {
+      document.getElementById("welcomeText").innerText =
+        "Logged in as: " + payload.name;
+      document.getElementById("profileName").innerText =
+        payload.name + " ▾";
+    } else {
+      document.getElementById("welcomeText").innerText =
+        "Welcome to your privacy dashboard.";
     }
 
-    let list = "Your Analyses:\n\n";
+    // Dropdown
+    function toggleDropdown() {
+      const menu = document.getElementById("dropdownMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
 
-    data.forEach((item,i)=>{
-      list +=
-      (i+1) + ". " +
-      "Language: " + item.detected_language +
-      " | Risk: " + item.risk_level +
-      " | Score: " + item.dpdp_score + "\n";
-    });
+    // Close dropdown when clicking outside
+    window.onclick = function (event) {
+      if (!event.target.closest('.profile')) {
+        document.getElementById("dropdownMenu").style.display = "none";
+      }
+    }
 
-    alert(list);
+    // Logout
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
 
-  }catch{
-    alert("Server connection error.");
-  }
-}
+    // View History
+    async function viewHistory() {
 
-</script>
+      try {
+
+        const res = await fetch("/my-analyses", {
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert("Unable to fetch analyses.");
+          return;
+        }
+
+        if (data.length === 0) {
+          alert("No analyses found.");
+          return;
+        }
+
+        let list = "Your Analyses:\n\n";
+
+        data.forEach((item, i) => {
+          list +=
+            (i + 1) + ". " +
+            "Language: " + item.detected_language +
+            " | Risk: " + item.risk_level +
+            " | Score: " + item.dpdp_score + "\n";
+        });
+
+        alert(list);
+
+      } catch {
+        alert("Server connection error.");
+      }
+    }
+
+  </script>
 
 </body>
+
 </html>

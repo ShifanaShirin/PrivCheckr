@@ -1,238 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>About PrivCheckr</title>
+  <meta charset="UTF-8">
+  <title>About PrivCheckr</title>
 
-<style>
-:root{
-  --bg:#020617;
-  --panel:#0b1220;
-  --border:#1e293b;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-  --success:#22c55e;
-  --danger:#ef4444;
-}
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b1220;
+      --border: #1e293b;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
 
-*{box-sizing:border-box}
+    * {
+      box-sizing: border-box
+    }
 
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  border-bottom:1px solid var(--border);
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.logo{
-  font-weight:600;
-  color:var(--primary);
-  font-size:18px;
-  text-decoration:none;
-}
+    .logo {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 18px;
+      text-decoration: none;
+    }
 
-.nav-links{
-  display:flex;
-  gap:25px;
-  align-items:center;
-}
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
 
-.nav-links a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-}
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-.nav-links a:hover{
-  color:var(--primary);
-}
+    .nav-links a:hover {
+      color: var(--primary);
+    }
 
-.header{
-  max-width:1100px;
-  margin:auto;
-  padding:60px 40px 30px;
-}
+    .header {
+      max-width: 1100px;
+      margin: auto;
+      padding: 60px 40px 30px;
+    }
 
-.header h1{
-  font-size:36px;
-  margin-bottom:12px;
-  color:var(--primary);
-}
+    .header h1 {
+      font-size: 36px;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
 
-.header p{
-  color:var(--muted);
-  font-size:16px;
-  max-width:750px;
-  line-height:1.6;
-}
+    .header p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 750px;
+      line-height: 1.6;
+    }
 
-.section{
-  max-width:1100px;
-  margin:auto;
-  padding:30px 40px;
-}
+    .section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 40px;
+    }
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:26px;
-  margin-bottom:25px;
-}
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px;
+      margin-bottom: 25px;
+    }
 
-.card h2{
-  margin-top:0;
-  color:var(--primary);
-  font-size:20px;
-}
+    .card h2 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 20px;
+    }
 
-.card p{
-  color:var(--muted);
-  font-size:14.5px;
-  line-height:1.7;
-}
+    .card p {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
 
-ul{
-  margin-top:10px;
-  padding-left:18px;
-  color:var(--muted);
-  font-size:14.5px;
-}
+    ul {
+      margin-top: 10px;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+    }
 
-ul li{
-  margin-bottom:8px;
-}
+    ul li {
+      margin-bottom: 8px;
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-  margin-top:15px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 15px;
+    }
 
-.grid-item{
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:16px;
-  font-size:14px;
-  color:var(--muted);
-}
+    .grid-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
 
-.grid-item strong{
-  color:var(--success);
-}
+    .grid-item strong {
+      color: var(--success);
+    }
 
-footer{
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:25px;
-  font-size:13px;
-  color:var(--muted);
-}
-</style>
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="/" class="logo" id="homeLink">PrivCheckr</a>
-  <div class="nav-links" id="navLinks"></div>
-</nav>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="logo" id="homeLink">PrivCheckr</a>
+    <div class="nav-links" id="navLinks"></div>
+  </nav>
 
-<div class="header">
-  <h1>About PrivCheckr</h1>
-  <p>
-    PrivCheckr helps users understand privacy policies before giving consent by
-    converting complex legal text into clear, actionable insights.
-  </p>
-</div>
-
-<div class="section">
-
-  <div class="card">
-    <h2>What is PrivCheckr?</h2>
+  <div class="header">
+    <h1>About PrivCheckr</h1>
     <p>
-      PrivCheckr analyzes privacy policies and highlights data practices,
-      privacy risks, and compliance indicators in a user-friendly format.
+      PrivCheckr helps users understand privacy policies before giving consent by
+      converting complex legal text into clear, actionable insights.
     </p>
   </div>
 
-  <div class="card">
-    <h2>DPDP Act Awareness</h2>
-    <p>
-      The Digital Personal Data Protection (DPDP) Act, 2023 regulates how organizations process personal data in India.
-    </p>
-  </div>
+  <div class="section">
 
-  <div class="card">
-    <h2>What PrivCheckr Evaluates</h2>
-    <ul>
-      <li>User consent before data collection</li>
-      <li>Purpose limitation for data usage</li>
-      <li>Data storage and retention practices</li>
-      <li>User rights such as access, update, and deletion</li>
-      <li>Grievance mechanisms</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>Understanding the Analysis Results</h2>
-    <div class="grid">
-      <div class="grid-item"><strong>Detected Language</strong><br>Identified language</div>
-      <div class="grid-item"><strong>DPDP Score</strong><br>Compliance score</div>
-      <div class="grid-item"><strong>Risk Level</strong><br>Low, Medium, or High</div>
-      <div class="grid-item"><strong>Recommendations</strong><br>Suggested improvements</div>
+    <div class="card">
+      <h2>What is PrivCheckr?</h2>
+      <p>
+        PrivCheckr analyzes privacy policies and highlights data practices,
+        privacy risks, and compliance indicators in a user-friendly format.
+      </p>
     </div>
+
+    <div class="card">
+      <h2>DPDP Act Awareness</h2>
+      <p>
+        The Digital Personal Data Protection (DPDP) Act, 2023 regulates how organizations process personal data in
+        India.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>What PrivCheckr Evaluates</h2>
+      <ul>
+        <li>User consent before data collection</li>
+        <li>Purpose limitation for data usage</li>
+        <li>Data storage and retention practices</li>
+        <li>User rights such as access, update, and deletion</li>
+        <li>Grievance mechanisms</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Understanding the Analysis Results</h2>
+      <div class="grid">
+        <div class="grid-item"><strong>Detected Language</strong><br>Identified language</div>
+        <div class="grid-item"><strong>DPDP Score</strong><br>Compliance score</div>
+        <div class="grid-item"><strong>Risk Level</strong><br>Low, Medium, or High</div>
+        <div class="grid-item"><strong>Recommendations</strong><br>Suggested improvements</div>
+      </div>
+    </div>
+
   </div>
 
-</div>
+  <footer>
+    © 2026 PrivCheckr — Understand Privacy Policies Before You Consent
+  </footer>
 
-<footer>
-© 2026 PrivCheckr — Understand Privacy Policies Before You Consent
-</footer>
+  <script>
 
-<script>
+    const token = localStorage.getItem("token");
+    const nav = document.getElementById("navLinks");
+    const homeLink = document.getElementById("homeLink");
 
-const token = localStorage.getItem("token");
-const nav = document.getElementById("navLinks");
-const homeLink = document.getElementById("homeLink");
+    if (token) {
+      homeLink.href = "/dashboard.html";
 
-if (token) {
-  homeLink.href = "/dashboard.html";
-
-  nav.innerHTML = `
+      nav.innerHTML = `
     <a href="/dashboard.html">Dashboard</a>
     <a href="/analyze.html">Analyze</a>
     <a href="/faq.html">FAQ</a>
     <a href="#" onclick="logout()" style="color:#ef4444">Logout</a>
   `;
-} else {
-  homeLink.href = "/";
+    } else {
+      homeLink.href = "/";
 
-  nav.innerHTML = `
+      nav.innerHTML = `
     <a href="/">Home</a>
     <a href="/faq.html">FAQ</a>
     <a href="/login.html">Login</a>
     <a href="/register.html">Register</a>
   `;
-}
+    }
 
-function logout(){
-  localStorage.removeItem("token");
-  window.location.href = "/";
-}
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
 
-</script>
+  </script>
 
 </body>
+
 </html>
