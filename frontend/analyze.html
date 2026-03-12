@@ -192,6 +192,92 @@
       background: #ef444433;
       color: #ef4444;
     }
+    /* RESULT DESIGN */
+
+.result-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:10px;
+}
+
+.result-item{
+  background:#020617;
+  border:1px solid var(--border);
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:14px;
+}
+
+.breakdown{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.break-card{
+  background:#020617;
+  border:1px solid var(--border);
+  padding:10px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.check{
+  color:#22c55e;
+  font-weight:700;
+}
+
+.cross{
+  color:#ef4444;
+  font-weight:700;
+}
+
+.section-title{
+  margin-top:16px;
+  font-size:15px;
+  font-weight:600;
+}
+/* DPDP BREAKDOWN CARDS */
+
+.breakdown{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+
+.break-card{
+  background:#020617;
+  border:1px solid #1e293b;
+  padding:10px 12px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+}
+
+.tick{
+  color:#22c55e;
+  font-weight:700;
+  font-size:16px;
+}
+
+/* NOTE STYLE */
+
+.note-box{
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#020617;
+  border:1px solid #1e293b;
+  color:#94a3b8;
+  font-size:12px;
+}
   </style>
 </head>
 
@@ -312,13 +398,44 @@ ${data.risk_level}
 
 <h4>DPDP Compliance Breakdown</h4>
 
-<ul>
-<li>Consent: ${data.dpdp_breakdown.consent ? "✔ Present" : "✖ Missing"}</li>
-<li>Purpose Limitation: ${data.dpdp_breakdown.purpose ? "✔ Present" : "✖ Missing"}</li>
-<li>Data Retention: ${data.dpdp_breakdown.retention ? "✔ Present" : "✖ Missing"}</li>
-<li>User Rights: ${data.dpdp_breakdown.user_rights ? "✔ Present" : "✖ Missing"}</li>
-<li>Grievance Mechanism: ${data.dpdp_breakdown.grievance ? "✔ Present" : "✖ Missing"}</li>
-</ul>
+<div class="breakdown">
+
+<div class="break-card">
+Consent
+<span class="tick">
+${data.dpdp_breakdown.consent ? "✔" : "✖"}
+</span>
+</div>
+
+<div class="break-card">
+Purpose Limitation
+<span class="tick">
+${data.dpdp_breakdown.purpose ? "✔" : "✖"}
+</span>
+</div>
+
+<div class="break-card">
+Data Retention
+<span class="tick">
+${data.dpdp_breakdown.retention ? "✔" : "✖"}
+</span>
+</div>
+
+<div class="break-card">
+User Rights
+<span class="tick">
+${data.dpdp_breakdown.user_rights ? "✔" : "✖"}
+</span>
+</div>
+
+<div class="break-card">
+Grievance Mechanism
+<span class="tick">
+${data.dpdp_breakdown.grievance ? "✔" : "✖"}
+</span>
+</div>
+
+</div>
 
 <hr style="border-color:#1e293b">
 
@@ -333,6 +450,9 @@ ${data.explanation.map(e => `<li>${e}</li>`).join("")}
 <ul>
 ${data.recommendations.map(r => `<li>${r}</li>`).join("")}
 </ul>
+<div class="note-box">
+Note: This analysis is for informational purposes only and does not constitute legal advice.
+</div>
 
 `;
 
