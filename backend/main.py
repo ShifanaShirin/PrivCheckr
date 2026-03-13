@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -168,6 +170,11 @@ def analyze_policy(
 
     # ---------------- NLP + ML ----------------
     processed_text = preprocess_text(analysis_text)
+    if not processed_text:
+        raise HTTPException(
+            status_code=400,
+            detail="Unable to process policy text"
+        )
     classification_results = classify_sentences(processed_text)
 
     dpdp_checks, score, risk = evaluate_dpdp(classification_results)
@@ -180,12 +187,18 @@ def analyze_policy(
     # ---------------- Data Type Detection ----------------
     data_types = []
 
-    if any(w in analysis_text for w in
-           ["name", "email", "phone", "address", "location"]):
+    if any(w in analysis_text for w in [
+    "name", "email", "phone", "address",
+    "location", "ip address", "device id",
+    "contact information"
+]):
         data_types.append("Personal Data")
 
-    if any(w in analysis_text for w in
-           ["aadhaar", "biometric", "health", "bank", "financial"]):
+    if any(w in analysis_text for w in [
+    "aadhaar", "biometric", "health",
+    "bank", "financial", "credit card",
+    "password", "authentication"
+]):
         data_types.append("Sensitive Data")
 
     # ---------------- Explanation ----------------
@@ -239,11 +252,12 @@ def analyze_policy(
 
     # ---------------- Store in DB ----------------
     new_analysis = Analysis(
-        policy_text=analysis_text,
+        policy_text=original_text,
         detected_language=detected_language,
         risk_level=risk,
         dpdp_score=f"{score}/7",
-        owner_id=current_user.id
+        owner_id=current_user.id,
+        created_at=datetime.now(timezone.utc)
     )
 
     db.add(new_analysis)
@@ -267,14 +281,28 @@ def analyze_policy(
 # USER HISTORY
 # ============================================================
 
-@app.get("/my-analyses", response_model=list[AnalysisResponse])
+@app.get("/my-analyses")
 def get_user_analyses(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    return db.query(Analysis).filter(
+
+    analyses = db.query(Analysis).filter(
         Analysis.owner_id == current_user.id
     ).all()
+
+    results = []
+
+    for a in analyses:
+        results.append({
+            "id": a.id,
+            "policy_text": a.policy_text,
+            "detected_language": a.detected_language,
+            "risk_level": a.risk_level,
+            "dpdp_score": a.dpdp_score,
+            "created_at": a.created_at.isoformat() if a.created_at else None
+        })
+    return results
 
 @app.delete("/delete-analysis/{analysis_id}")
 def delete_analysis(

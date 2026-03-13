@@ -172,7 +172,8 @@
       <div class="result">
       Language: <b>${a.detected_language}</b><br>
       Risk Level: <b>${a.risk_level}</b><br>
-      DPDP Score: <b>${a.dpdp_score}</b>
+      DPDP Score: <b>${a.dpdp_score}</b><br>
+      Date: <b>${new Date(a.created_at).toLocaleDateString("en-IN")}</b>
       </div>
 
       <button class="delete" onclick="deleteAnalysis(${a.id})">

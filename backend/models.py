@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from backend.database import Base
-
+from sqlalchemy import DateTime
+from datetime import datetime, timezone
 
 class User(Base):
     __tablename__ = "users"
@@ -25,7 +26,8 @@ class Analysis(Base):
     policy_text = Column(Text)
     detected_language = Column(String)
     risk_level = Column(String)
-    dpdp_score = Column(String)
-
+    dpdp_score = Column(Integer)
+    data_types = Column(String)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="analyses")

@@ -15,7 +15,10 @@ def evaluate_dpdp(classification_results):
         "grievance": bool(grievance)
     }
 
+    # -----------------------
     # DPDP Score
+    # -----------------------
+
     score = (
         (2 if consent else 0) +
         (1 if purpose else 0) +
@@ -24,11 +27,16 @@ def evaluate_dpdp(classification_results):
         (1 if grievance else 0)
     )
 
-    # Risk evaluation
+    max_score = 7
+
+    # -----------------------
+    # Risk Evaluation
+    # -----------------------
+
     if score >= 6 and risk_flags == 0:
         risk_level = "Low"
 
-    elif score >= 3:
+    elif score >= 4 and risk_flags <= 2:
         risk_level = "Medium"
 
     else:

@@ -26,58 +26,84 @@ def classify_sentences(processed_text):
 
     for s in sentences:
 
-        # ---------- CONSENT ----------
+        # =========================
+        # 1️⃣ MACHINE LEARNING
+        # =========================
+        if model and vectorizer:
+
+            features = vectorizer.transform([s])
+            prediction = model.predict(features)[0]
+
+            if prediction in results:
+                results[prediction] += 1
+
+
+        # =========================
+        # 2️⃣ RULE BASED BOOST
+        # =========================
+
+        # CONSENT
         if any(w in s for w in [
             "user consent",
             "with your consent",
             "provide consent",
-            "agree to this policy"
+            "agree to this policy",
+            "accept our privacy policy"
         ]):
-            results["consent"] = 1
+            results["consent"] += 1
 
-        # ---------- PURPOSE ----------
+
+        # PURPOSE
         if any(w in s for w in [
             "purpose of collecting",
-            "purpose of data",
             "used to provide services",
-            "used to improve our services"
+            "improve our services",
+            "enhance user experience"
         ]):
-            results["purpose"] = 1
+            results["purpose"] += 1
 
-        # ---------- RETENTION ----------
+
+        # RETENTION
         if any(w in s for w in [
-            "data retention",
             "retain your data",
+            "data retention",
             "retain personal data",
-            "delete your data after"
+            "delete your data after",
+            "stored for a limited period"
         ]):
-            results["retention"] = 1
+            results["retention"] += 1
 
-        # ---------- USER RIGHTS ----------
+
+        # USER RIGHTS
         if any(w in s for w in [
             "right to access",
             "right to delete",
             "right to update",
-            "withdraw consent"
+            "withdraw consent",
+            "request deletion"
         ]):
-            results["rights"] = 1
+            results["rights"] += 1
 
-        # ---------- GRIEVANCE ----------
+
+        # GRIEVANCE
         if any(w in s for w in [
             "grievance officer",
             "contact us at",
             "privacy officer",
-            "complaints regarding data"
+            "complaints regarding data",
+            "contact support"
         ]):
-            results["grievance"] = 1
+            results["grievance"] += 1
 
-        # ---------- RISK ----------
+
+        # RISK
         if any(w in s for w in [
             "third party",
             "advertisers",
             "sell data",
             "indefinitely",
-            "share with partners"
+            "share with partners",
+            "external organizations"
         ]):
             results["risk"] += 1
 
