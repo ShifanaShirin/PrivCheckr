@@ -33,13 +33,21 @@ def evaluate_dpdp(classification_results):
     # Risk Evaluation
     # -----------------------
 
-    if score >= 6 and risk_flags == 0:
-        risk_level = "Low"
+    if score >= 6:
+        if risk_flags == 0:
+            risk_level = "Low"
+        elif risk_flags <= 2:
+            risk_level = "Medium"
+        else:
+            risk_level = "High"
 
-    elif score >= 3 and risk_flags <= 2:
-        risk_level = "Medium"
+    elif score >= 3:
+        if risk_flags <= 2:
+            risk_level = "Medium"
+        else:
+            risk_level = "High"
 
     else:
         risk_level = "High"
 
-    return dpdp_checks, score, risk_level
+    return dpdp_checks, score, risk_level, risk_flags

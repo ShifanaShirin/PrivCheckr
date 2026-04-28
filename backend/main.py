@@ -177,7 +177,7 @@ def analyze_policy(
         )
     classification_results = classify_sentences(processed_text)
 
-    dpdp_checks, score, risk = evaluate_dpdp(classification_results)
+    dpdp_checks, score, risk, risk_flags = evaluate_dpdp(classification_results)
     consent = dpdp_checks["consent"]
     purpose = dpdp_checks["purpose"]
     retention = dpdp_checks["retention"]
@@ -228,6 +228,8 @@ def analyze_policy(
         explanation.append("Grievance or contact mechanism available.")
     else:
         explanation.append("No grievance redressal mechanism mentioned.")
+    if risk_flags > 0:
+        explanation.append(f"{risk_flags} risk indicators detected (e.g., data sharing or unsafe practices).")
 
     # ---------------- Recommendations ----------------
     recommendations = []
@@ -269,6 +271,7 @@ def analyze_policy(
         "translated_to_english": translated,
         "data_types": data_types,
         "dpdp_score": f"{score}/7",
+        "risk_flags": risk_flags,
         "risk_level": risk,
         "dpdp_breakdown": dpdp_checks,
         "classification_summary": classification_results,
